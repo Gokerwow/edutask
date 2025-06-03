@@ -8,6 +8,8 @@ use App\Models\Notice;
 use App\Models\work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class LectureController extends Controller
 {
@@ -30,9 +32,55 @@ class LectureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeLecture(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'class-name' => 'required|string|max:255',
+            'class-topic' => 'required|string|max:10',
+            'class-description' => 'required|string|max:255',
+            'class-code' => 'required|string|max:10|unique:lectures,code',
+            'class-banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $file = $request->file('class-banner');
+
+        $path = $file ? $file->store('banners', 'public') : null;
+        $url = $path ? Storage::url($path) : null;
+        $lecture = ModelsLecture::create([
+            'name' => $validate['class-name'],
+            'topic' => $validate['class-topic'],
+            'description' => $validate['class-description'],
+            'code' => $validate['class-code'],
+            'banner' => $url,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('lecture.show', $lecture->id)
+            ->with('success', 'Kelas berhasil dibuat!');
+    }
+
+    public function codeCheck()
+    {
+        $validator = Validator::make(request()->all(), [
+            'class-code' => 'required|string|max:10|unique:lectures,code',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first('class-code'),
+            ]);
+        }
+
+        $codeToCheck = request()->input('class-code');
+
+        $exist = ModelsLecture::where('code', $codeToCheck)->exists();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Kode kelas tersedia.',
+            'exists' => $exist,
+        ]);
     }
 
     /**

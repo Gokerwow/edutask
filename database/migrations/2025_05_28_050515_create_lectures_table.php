@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('lectures', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status')->default('active');
+            $table->string('topic');
+            $table->string('description');
             $table->string('code')->unique();
             $table->foreignId('user_id');
             $table->string('banner')->nullable();

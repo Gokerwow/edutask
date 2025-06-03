@@ -11,6 +11,15 @@ class Lecture extends Model
     /** @use HasFactory<\Database\Factories\LectureFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'topic',
+        'description',
+        'code',
+        'banner',
+        'user_id',
+    ];
+
     // public function siswa() {
     //     return $this->hasMany(KelasUserRoles::class, 'user_id');
     // }

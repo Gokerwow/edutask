@@ -20,11 +20,16 @@ Route::middleware('auth')->group(function() {
     Route::prefix('lecture')->group(function() {
         Route::get('/', [LectureController::class, 'indexLecture'])
         ->name('lecture.index');
-                Route::get('/create', [LectureController::class, 'createLecture'])
+        Route::get('/create', [LectureController::class, 'createLecture'])
         ->name('lecture.create');
+        Route::post('/create', [LectureController::class, 'storeLecture'])
+        ->name('lecture.store');
         Route::get('/{id}', [LectureController::class, 'showLecture'])
         ->name('lecture.show');
     });
+
+    Route::post('/api/generateCode', [LectureController::class, 'codeCheck'])
+        ->name('code.Check');
 });
 
 
