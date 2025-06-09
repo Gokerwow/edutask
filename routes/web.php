@@ -3,6 +3,7 @@
 use App\Http\Controllers\LectureController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\TugasKuisController;
 use App\Http\Controllers\WorkController;
@@ -38,9 +39,9 @@ Route::middleware('auth')->group(function() {
                 ->name('materi.create');
             Route::post('/create', [MateriController::class, 'storeMateri'])
                 ->name('materi.store');
-            Route::get('/update', [MateriController::class, 'updateMateri'])
+            Route::get('{materi}/update', [MateriController::class, 'editMateri'])
                 ->name('materi.edit');
-            Route::get('/update', [MateriController::class, 'updateMateri'])
+            Route::put('{materi}/update', [MateriController::class, 'updateMateri'])
                 ->name('materi.update');
             Route::get('/{materi}', [MateriController::class, 'showMateri'])
                 ->name('materi.show');
@@ -59,6 +60,20 @@ Route::middleware('auth')->group(function() {
                 ->name('tugas.edit');
             Route::put('{tugas} ', [TugasController::class, 'updateTugas'])
                 ->name('tugas.update');
+
+            Route::prefix('{tugas}')->group(function() {
+                Route::get('/submit', [SubmissionController::class, 'createSubmission'])
+                    ->name('tugas.submit');
+                Route::post('/submit', [SubmissionController::class, 'storeSubmission'])
+                    ->name('tugas.storeSubmit');
+                Route::get('{submission}/update', [SubmissionController::class, 'editSubmission'])
+                    ->name('tugas.editSubmit');
+                Route::put('{submission}/update', [SubmissionController::class, 'updateSubmission'])
+                    ->name('tugas.updateSubmit');
+                Route::get('/{submit}/download', [SubmissionController::class, 'downloadSubmit'])
+                    ->name('tugas.downloadSubmit');
+            });
+
         });
     });
 

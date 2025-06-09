@@ -20,7 +20,7 @@ class MateriFactory extends Factory
 
     public function definition(): array
     {
-                // Pilihan 1 (Praktik Terbaik untuk Testing/Seeding Bersih):
+        // Pilihan 1 (Praktik Terbaik untuk Testing/Seeding Bersih):
         // Gunakan disk palsu agar tidak mengotori direktori storage Anda yang sebenarnya.
         Storage::fake('public');
 

@@ -26,8 +26,8 @@ class TugasController extends Controller
      */
     public function createTugas(Lecture $lecture)
     {
-
-        return view('work.create-Tugas',compact('lecture'));
+        $isEdit = false;
+        return view('work.create-Tugas',compact('lecture', 'isEdit'));
     }
 
     /**
@@ -83,17 +83,21 @@ class TugasController extends Controller
         if ($tugas->lecture_id !== $lecture->id) {
             abort(404);
         }
-
         // Cek apakah pengguna yang sedang login adalah tentor DI KELAS INI
         $isTentorInThisClass = Auth::user()->kelasRoles
             ->where('lecture_id', $lecture->id) // Filter berdasarkan ID kelas dari tugas ini
             ->where('role', 'tentor')
             ->isNotEmpty(); // Cek apakah hasilnya tidak kosong
 
+        $submissionExists = $tugas->submissions()
+            ->where('user_id', Auth::id())
+            ->first();
+
         return view('work.tugas-show', [
             'lecture' => $lecture,
             'tugas' => $tugas,
             'isTentorInThisClass' => $isTentorInThisClass,
+            'submissionExists' => $submissionExists,
         ]);
     }
 

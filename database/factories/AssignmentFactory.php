@@ -22,11 +22,11 @@ class AssignmentFactory extends Factory
     {
         // Pilihan 1 (Praktik Terbaik untuk Testing/Seeding Bersih):
         // Gunakan disk palsu agar tidak mengotori direktori storage Anda yang sebenarnya.
-        Storage::fake('public');
+        // Storage::fake('public');
 
         // Pilihan 2 (Jika Anda benar-benar ingin file dibuat di storage/app/public):
         // Pastikan direktori tujuan ada
-        // Storage::disk('public')->makeDirectory('materi_files');
+        Storage::disk('public')->makeDirectory('materi_files');
 
 
         // 1. Buat file palsu (fake file)
@@ -35,7 +35,7 @@ class AssignmentFactory extends Factory
         $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf'); // Buat file PDF palsu 1.5MB
 
         // 2. Simulasikan penyimpanan file untuk mendapatkan path yang valid
-        $filePath = $fakeFile->store('materi_files', 'public');
+        $filePath = $fakeFile->store('tugas_files', 'public');
 
         // 3. Kembalikan array data untuk model
         return [

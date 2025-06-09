@@ -95,14 +95,14 @@
         <div class="w-full lg:w-3/4">
             <!-- Dashboard Ringkasan -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500">
                     <h3 class="text-gray-500 text-sm font-medium mb-1">Materi Terbaru</h3>
                     <p class="text-xl font-semibold mb-2">{{ $materiTerbaru->title ?? 'Tidak Ada Materi Terbaru' }}</p>
                     @if($materiTerbaru !== null)
                         <p class="text-sm text-gray-500">Diupload {{ $materiTerbaru?->created_at->diffForHumans() }}</p>
                     @endif
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-orange-500">
                     <h3 class="text-gray-500 text-sm font-medium mb-1">Tugas Terbaru</h3>
                     @if ($tugasTerbaru && $tugasTerbaru->count() > 0) {{-- atau !$tugasTerbaru->isEmpty() --}}
                         {{-- Sekarang aman untuk memanggil $tugasTerbaru->first() --}}

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Assignment extends Model
 {
@@ -29,10 +30,6 @@ class Assignment extends Model
         'deadline' => 'datetime', // Penting agar 'deadline' otomatis menjadi objek Carbon saat diambil dari DB
         // tambahkan cast lain jika ada
     ];
-
-    public function user() {
-        return $this->hasMany(userWork::class);
-    }
 
     public function lecture() {
         return $this->belongsTo(Lecture::class);
@@ -66,6 +63,31 @@ class Assignment extends Model
                     'join' => ', ',
                     'syntax' => Carbon::DIFF_RELATIVE_TO_NOW
                 ]);
+            }
+        );
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
+
+    protected function formattedFileSize(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->file_path && Storage::disk('public')->exists($this->file_path)) {
+                    $bytes = Storage::disk('public')->size($this->file_path);
+
+                    // Logika formatBytes di sini...
+                    if ($bytes == 0) return '0 Bytes';
+                    $k = 1024;
+                    $dm = 2;
+                    $sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                    $i = floor(log($bytes, $k));
+                    return round($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
+                }
+                return 'N/A';
             }
         );
     }

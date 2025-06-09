@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KelasUserRoles;
 use App\Models\Lecture;
 use App\Models\materi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -24,7 +26,8 @@ class MateriController extends Controller
      */
     public function createMateri(Lecture $lecture)
     {
-        return view('work.create-materi', compact('lecture'));
+        $isEdit = false;
+        return view('work.create-materi', compact('lecture', 'isEdit'));
     }
 
     /**
@@ -84,9 +87,16 @@ class MateriController extends Controller
         if ($materi->lecture_id !== $lecture->id) {
             abort(404);
         }
+
+        $isTentor = KelasUserRoles::where('lecture_id', $lecture->id)
+            ->where('user_id', Auth::id())
+            ->where('role', 'tentor')
+            ->exists();
+
         return view('work.materi-show', [
             'lecture' => $lecture,
-            'materi' => $materi
+            'materi' => $materi,
+            'isTentor' => $isTentor,
         ]);
     }
 
@@ -118,17 +128,65 @@ class MateriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function editMateri(Lecture $lecture, materi $materi)
     {
-        //
+
+        $isEdit = true; // Setel variabel ini untuk menandakan bahwa ini adalah mode edit
+        return view('work.create-materi', [
+            'lecture' => $lecture,
+            'materi' => $materi,
+            'isEdit' => $isEdit,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateMateri(Request $request, Lecture $lecture, materi $materi)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'materi-title' => 'required|string|max:255',
+            'materi-description' => 'required|string|max:500',
+            'materi-file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,png,mp4|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            $errorList = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorList .= '<li>' . e($error) . '</li>';
+            }
+            $errorList .= '</ul>';
+
+            Alert::error('Oops! Terjadi Kesalahan', $errorList)->toHtml();
+            return redirect()->back()->withInput();
+        }
+
+        $filePath = $materi->file_path; // Simpan path file lama
+        $originalFileName = $materi->original_filename;
+
+
+        if ($request->hasFile('materi-file')) {
+            // Hapus file lama jika ada
+            if ($materi->file_path && Storage::disk('public')->exists($materi->file_path)) {
+                Storage::disk('public')->delete($materi->file_path);
+            }
+            // Simpan file baru
+            $filePath = $request->file('materi-file')->store('materi_files', 'public');
+            $originalFileName = $request->file('materi-file')->getClientOriginalName();
+        }
+
+        $materi->update([
+            'title' => $request->input('materi-title'),
+            'description' => $request->input('materi-description'),
+            'file_path' => $filePath,
+            'original_filename' => $originalFileName,
+            'lecture_id' => $lecture->id // Pastikan materi ini terkait dengan lecture yang benar
+        ]);
+
+        Alert::success('Success', 'Materi Berhasil Diperbarui.');
+
+        return redirect()->route('materi.show', [$lecture, $materi])->with('success', 'Materi updated successfully.');
     }
 
     /**

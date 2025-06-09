@@ -16,7 +16,7 @@
     @livewireStyles
     @include('components.navbar')
 
-    <div class="pt-[80px] min-h-[700px] flex items-center">
+    <div class="pt-[80px] min-h-[700px] flex flex-col justify-center items-center">
         @yield('content')
     </div>
 

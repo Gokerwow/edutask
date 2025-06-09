@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LectureSeeder::class,
             AssignmentSeeder::class,
-            UserWorkSeeder::class,
             KelasUserRolesSeeder::class,
             NoticeSeeder::class,
-            MateriSeeder::class
+            MateriSeeder::class,
+            SubmissionSeeder::class,
         ]);
 
     }

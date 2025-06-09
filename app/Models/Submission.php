@@ -7,25 +7,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class materi extends Model
+class Submission extends Model
 {
-    /** @use HasFactory<\Database\Factories\MateriFactory> */
+    /** @use HasFactory<\Database\Factories\SubmissionFactory> */
     use HasFactory;
 
-    protected $table = 'materials';
-
     protected $fillable = [
-        'lecture_id',
-        'title',
         'description',
         'file_path',
         'original_fileName',
-        'created_at',
-        'updated_at',
+        'status', // 'submitted', 'cancelled', 'graded'
+        'assignment_id',
+        'user_id', // Assuming submissions are linked to users
+        'grade', // Optional field for grade
+        'comment', // Optional field for comments
+        'graded_at', // Optional field for when the submission was graded
     ];
-    public function lecture()
+
+    public function assignment()
     {
-        return $this->belongsTo(lecture::class);
+        return $this->belongsTo(Assignment::class);
     }
 
     protected function formattedFileSize(): Attribute

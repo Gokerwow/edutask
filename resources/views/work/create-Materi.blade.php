@@ -4,23 +4,24 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">Buat Materi Baru</h1>
-            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
-                <i class="fas fa-arrow-left mr-2"></i>Kembali
-            </button>
+            <h1 class="text-2xl font-bold text-gray-800">{{ $isEdit ? 'Edit Materi' : 'Buat Materi Baru' }}</h1>
         </div>
 
         <!-- Form Create Materi -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <form action="{{ route('materi.store', ['lecture' => $lecture]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ $isEdit ? route('materi.update', ['lecture' => $lecture, 'materi' => $materi]) : route('materi.store', ['lecture' => $lecture]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @if($isEdit)
+                    @method('put')
+                @endif
                 <!-- Judul Materi -->
                 <div class="mb-6">
                     <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">Judul Materi</label>
                     <input type="text" id="judul"
                         name="materi-title"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Masukkan judul materi">
+                        placeholder="Masukkan judul materi"
+                        value="{{ $isEdit ? $materi->title : '' }}" required>
                 </div>
 
                 <!-- Deskripsi -->
@@ -29,7 +30,7 @@
                     <textarea id="deskripsi" rows="3"
                         name="materi-description"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Tambahkan deskripsi singkat tentang materi ini"></textarea>
+                        placeholder="Tambahkan deskripsi singkat tentang materi ini">{{ $isEdit ? $materi->description : '' }}</textarea>
                 </div>
 
                 <!-- Lampiran -->
@@ -48,16 +49,34 @@
                     </div>
                     <div class="mt-2 text-sm text-gray-500">Format yang didukung: PDF, PPT, DOC, JPG, PNG, MP4</div>
                     <div id="previewDiv" class="flex gap-2 w-full">
-
+                        @if ($isEdit && $materi->file_path)
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="border rounded-lg p-3 flex items-center">
+                                    <!-- SVG PDF Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-gray-800">{{ $materi->original_fileName }}</p>
+                                        <p class="text-sm text-gray-500">{{ $materi->formattedFileSize }}</p>
+                                    </div>
+                                    <button type="button" id="deleteFilePreview" class="text-orange-600 hover:text-orange-700 mx-auto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
                 <!-- Tombol Aksi -->
                 <div class="flex justify-end gap-3 pt-4 border-t">
-                    <button type="button"
+                    <a href="{{ $isEdit? route('materi.show', ['lecture' => $lecture, 'materi' => $materi]) : route('lecture.show', ['id' => $lecture->id]) }}"
                         class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                        Simpan Draft
-                    </button>
+                        Batal
+                    </a>
                     <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-blue-700">
                         Publikasikan Materi
                     </button>
