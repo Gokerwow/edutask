@@ -32,8 +32,12 @@ class Lecture extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function work() {
-        return $this->hasMany(work::class);
+    public function assignment() {
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function materi() {
+        return $this->hasMany(materi::class);
     }
 
     public function notice() {

@@ -7,10 +7,23 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class work extends Model
+class Assignment extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'file_path',
+        'original_fileName',
+        'created_at',
+        'updated_at',
+        'deadline',
+        'lecture_id',
+        'description',
+    ];
+
+    protected $table = 'assignments'; // Pastikan nama tabel sesuai dengan yang ada di database
 
     protected $casts = [
         'deadline' => 'datetime', // Penting agar 'deadline' otomatis menjadi objek Carbon saat diambil dari DB

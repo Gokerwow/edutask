@@ -10,10 +10,10 @@ class userWork extends Model
     /** @use HasFactory<\Database\Factories\UserWorkFactory> */
     use HasFactory;
 
-    protected $table = 'userWorks';
+    protected $table = 'submission';
 
-    public function Work() {
-        return $this->belongsTo(work::class);
+    public function assignment() {
+        return $this->belongsTo(Assignment::class);
     }
 
     public function Siswa() {

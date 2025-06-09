@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submission', function (Blueprint $table) {
+        Schema::create('assignments', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->string('file_path')->nullable();
-            $table->text('comment')->nullable();
-            $table->enum('status', ['submitted', 'graded', 'late'])->default('submitted');
-            $table->integer('grade')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('assignments_id')->constrained()->onDelete('cascade');
+            $table->string('original_fileName')->nullable();
+            $table->string('description');
+            $table->dateTime('deadline');
+            $table->foreignId('lecture_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('userWorks');
+        Schema::dropIfExists('works');
     }
 };

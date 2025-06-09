@@ -25,7 +25,7 @@ class SearchClass extends Component
                     // Untuk setiap 'lecture' yang di-load, hitung jumlah 'members'-nya
                     // Pastikan 'members' adalah nama relasi yang benar di model Lecture Anda
                     $query->withCount('user')
-                          ->with('tentor'); // Anda tetap bisa eager load relasi lain dari lecture, seperti tentor
+                        ->with('tentor'); // Anda tetap bisa eager load relasi lain dari lecture, seperti tentor
                 },
                 // 'user' // Relasi user di KelasUserRoles (user yang login), mungkin tidak perlu jika sudah punya $user
             ]);
@@ -33,9 +33,9 @@ class SearchClass extends Component
         if (!empty(trim($this->queries))) {
             $searchLectures = $baseQuery->whereHas('lecture', function ($query) {
                 $query->where('name', 'LIKE', '%' . $this->queries . '%')
-                      ->orWhereHas('tentor', function ($subQuery) {
-                          $subQuery->where('name', 'LIKE', '%' . $this->queries . '%');
-                      });
+                    ->orWhereHas('tentor', function ($subQuery) {
+                        $subQuery->where('name', 'LIKE', '%' . $this->queries . '%');
+                    });
             })->get();
         } else {
             $searchLectures = $baseQuery->get();

@@ -1,10 +1,12 @@
 <nav class="h-18 w-full h-[80px] flex items-center justify-between px-40 bg-white shadow-md fixed z-[99]">
-    <div class="h-full flex justify-center items-center w-36 overflow-hidden">
-        <img class="w-[150px]" src="{{ asset('images/logo/edutaskLOGO.png') }}" alt="">
-    </div>
+    <a href="{{ route('homepage') }}">
+        <div class="h-full flex justify-center items-center w-36 overflow-hidden">
+            <img class="w-[150px]" src="{{ asset('images/logo/edutaskLOGO.png') }}" alt="">
+        </div>
+    </a>
     <ul class="flex h-full gap-2">
         <li class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
-            <a href=""><span class="relative z-10 text-lg">Home</span></a>
+            <a href="{{ route('homepage') }}"><span class="relative z-10 text-lg">Home</span></a>
         </li>
         <li class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
             <a href=""><span class="relative z-10 text-lg">About</span></a>

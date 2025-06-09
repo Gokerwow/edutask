@@ -9,6 +9,11 @@ class KelasUserRoles extends Model
 {
     /** @use HasFactory<\Database\Factories\KelasUserRolesFactory> */
     use HasFactory;
+    protected $fillable = [
+        'lecture_id',
+        'user_id',
+        'role'
+    ];
 
     protected $table = 'kelasUserRoles';
 

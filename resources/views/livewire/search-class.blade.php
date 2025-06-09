@@ -58,10 +58,11 @@
                     <p class="text-sm text-gray-500 mb-6">Masukkan kode kelas yang Anda dapatkan dari pengajar.</p>
                 </div>
 
-                <form action="#" method="POST">
+                <form action="{{ route('lecture.join') }}" method="POST">
+                    @csrf
                     <div>
                         <label for="class_code" class="block text-sm font-medium text-gray-700 mb-1">Kode Kelas</label>
-                        <input type="text" name="class_code" id="class_code"
+                        <input type="text" name="join-code" id="class_code"
                             class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Contoh: XYZ123" required>
                     </div>
@@ -74,7 +75,7 @@
                     </div>
                     <div class="mt-4 text-center">
                         <button type="button"
-                            @click="show = false"
+                            x-data x-on:click="$dispatch('close-modal', 'joinClassModal')"
                             class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Batal
                         </button>

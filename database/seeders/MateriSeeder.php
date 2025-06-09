@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\work;
+use App\Models\materi;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class WorkSeeder extends Seeder
+class MateriSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        work::factory(100)->create();
+        materi::factory(50)->create();
     }
 }

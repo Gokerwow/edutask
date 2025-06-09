@@ -12,21 +12,14 @@
     @vite('resources/css/app.css', 'resources/js/app.js')
 </head>
 <body>
-    @if ($errors->any())
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-            <p class="font-bold">Oops! Ada beberapa masalah dengan input Anda:</p>
-            <ul class="list-disc ml-5 mt-2">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @include('sweetalert::alert')
     @livewireStyles
     @include('components.navbar')
-    <div class="pt-[80px]">
+
+    <div class="pt-[80px] min-h-[700px] flex items-center">
         @yield('content')
     </div>
+
     @include('components.footer')
     @livewireScripts
     @stack('scripts')

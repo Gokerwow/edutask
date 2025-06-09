@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\KelasUserRoles;
 use App\Models\Lecture as ModelsLecture;
+use App\Models\materi;
 use App\Models\Notice;
-use App\Models\work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LectureController extends Controller
 {
@@ -55,6 +57,12 @@ class LectureController extends Controller
             'user_id' => Auth::id(),
         ]);
 
+        $kelasUserRoles = KelasUserRoles::create([
+            'lecture_id' => $lecture->id,
+            'user_id' => Auth::id(),
+            'role' => 'tentor', // Atur peran sebagai 'tentor'
+        ]);
+
         return redirect()->route('lecture.show', $lecture->id)
             ->with('success', 'Kelas berhasil dibuat!');
     }
@@ -89,36 +97,72 @@ class LectureController extends Controller
     public function showLecture(string $id)
     {
         $lecture = ModelsLecture::withCount('user') // Pertama, siapkan query dengan count
-                    ->with('work')
+                    ->with('assignment')
                     ->findOrFail($id);   // Kemudian, ambil model berdasarkan ID
 
-                    $materi = $lecture->work->filter(function($item) {
-            return $item->type === 'materi';
-        });
+        $materi = materi::where('lecture_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $tugasKuis = $lecture->work->filter(function($item) {
-            return $item->type === 'tugas' || $item->type === 'kuis';
-        });
+        $tugas = Assignment::where('lecture_id', $id)
+            ->orderBy('created_at', 'desc') // Order at the database level
+            ->get();
 
-        $tugasTerbaru = $lecture->work() // Call work as a method to get the Query Builder
-            ->where('type', 'tugas')    // Filter at the database level
+        $tugasTerbaru = Assignment::where('lecture_id', $id)
             ->orderBy('created_at', 'desc') // Order at the database level
             ->first();
 
-        $kuisTerbaru = $lecture->work()
-            ->where('type', 'tugas')    // Filter at the database level
-            ->orderBy('created_at', 'desc') // Order at the database level
-            ->first();
 
-        $materiTerbaru = $lecture->work()
-            ->where('type', 'materi')    // Filter at the database level
-            ->orderBy('created_at', 'desc') // Order at the database level
-            ->first();
+        $materiTerbaru = materi::where('lecture_id', $id)
+            ->orderBy('created_at', 'desc')
+                ->first();
 
+            // Cek apakah pengguna yang sedang login adalah tentor DI KELAS INI
+        $isTentorInThisClass = Auth::user()->kelasRoles
+            ->where('lecture_id', $lecture->id) // Filter berdasarkan ID kelas dari tugas ini
+            ->where('role', 'tentor')
+            ->isNotEmpty(); // Cek apakah hasilnya tidak kosong
 
         $pengumuman = Notice::where('lecture_id', $id)->orderBy('created_at', 'desc')->get();
 
-        return view('lecture.show', compact(['lecture', 'materi', 'tugasKuis', 'pengumuman', 'tugasTerbaru', 'kuisTerbaru', 'materiTerbaru']));
+        return view('lecture.show', compact(['lecture', 'materi', 'tugas', 'pengumuman', 'tugasTerbaru', 'materiTerbaru', 'isTentorInThisClass']));
+    }
+
+    public function joinLecture(Request $request) {
+        $request->validate([
+            'join-code' => 'required|string|max:7',
+        ]);
+
+        $code = $request->input('join-code');
+
+        $lectureExist = ModelsLecture::where('code', $code)->first();
+
+        if (!$lectureExist) {
+            return redirect()->back()->with('error', 'Kode kelas tidak valid atau kelas tidak ditemukan.');
+        }
+
+        $lectureId = $lectureExist->id;
+
+        $alreadyJoined = KelasUserRoles::where('lecture_id', $lectureId)
+        ->where('user_id', Auth::id())->exists();
+
+        if ($alreadyJoined) {
+            Alert::warning('Tidak Bisa Bergabung', 'Anda sudah bergabung pada kelas ini.');
+            return redirect()->back()->with('error', 'Anda sudah bergabung pada kelas ini.');
+        }
+
+        $gabung = KelasUserRoles::create([
+            'lecture_id' => $lectureId,
+            'user_id' => Auth::id(),
+            'role' => 'siswa', // Atur peran sebagai 'siswa'
+        ]);
+
+        Alert::success('Success Title', 'Yeay! Kamu resmi jadi bagian dari kelas ini 🎉
+        Jangan lupa cek materi dan mulai belajarnya ya!');
+
+
+        return redirect()->route('lecture.show', $lectureId)
+            ->with('success', 'Anda telah bergabung dengan kelas!');
     }
 
     /**
