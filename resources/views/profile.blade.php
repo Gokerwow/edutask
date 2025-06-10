@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="max-w-7xl flex gap-9 mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <x-sidebar :user="$user"/>
+        <x-sidebar :user="$user" />
         <div>
             <!-- Profile Header -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
@@ -10,8 +10,26 @@
                 <div class="px-6 pb-6">
                     <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 sm:-mt-20">
                         <div class="relative">
-                            <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg overflow-hidden">
-                                <img class="w-full h-full object-cover" src="{{ $user->avatar }}" alt="Profile" class="">
+                            <div
+                                class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg overflow-hidden">
+                                @if ($user->avatar)
+                                    <img class="w-full h-full object-cover" src="{{ $user->avatar }}" alt="Profile"
+                                        class="">
+                                @else
+                                    <svg class="w-full h-full object-cover" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
+                                                y2="100%">
+                                                <stop offset="0%" stop-color="#f97316" />
+                                                <stop offset="100%" stop-color="#7e22ce" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                        <circle cx="50" cy="40" r="15" fill="#ffffff" />
+                                        <circle cx="50" cy="85" r="25" fill="#ffffff" />
+                                    </svg>
+                                @endif
+
                             </div>
                             <div
                                 class="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 bg-green-400 rounded-full border-2 border-white">
@@ -102,7 +120,8 @@
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-calendar text-gray-400 w-5"></i>
-                                <span class="ml-3 text-gray-700">Bergabung {{ date('d M Y', strtotime('$user->created_at')) }}</span>
+                                <span class="ml-3 text-gray-700">Bergabung
+                                    {{ date('d M Y', strtotime('$user->created_at')) }}</span>
                             </div>
                         </div>
                     </div>
@@ -161,7 +180,8 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900">Tugas Terbaru</h2>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Lihat Semua</a>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Lihat
+                                Semua</a>
                         </div>
                         <div class="space-y-4">
                             <div class="flex items-center p-4 border border-gray-100 rounded-xl card-hover">
@@ -188,7 +208,9 @@
                                     <h3 class="font-medium text-gray-900">Design Database E-Commerce</h3>
                                     <p class="text-sm text-gray-600">Basis Data</p>
                                     <div class="flex items-center mt-1">
-                                        <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Deadline: 5
+                                        <span
+                                            class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Deadline:
+                                            5
                                             hari</span>
                                     </div>
                                 </div>
@@ -204,7 +226,8 @@
                                     <h3 class="font-medium text-gray-900">Portfolio Website</h3>
                                     <p class="text-sm text-gray-600">Pemrograman Web</p>
                                     <div class="flex items-center mt-1">
-                                        <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Selesai</span>
+                                        <span
+                                            class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Selesai</span>
                                     </div>
                                 </div>
                                 <div class="text-right">
