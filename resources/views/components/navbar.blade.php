@@ -29,7 +29,8 @@
                                 class="w-full h-full object-cover object-center" referrerPolicy="no-referrer">
                         </div>
                     @else
-                        <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
                                     y2="100%">
@@ -51,8 +52,24 @@
                     <div class="p-4 border-b border-gray-200">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img src="{{ auth()->user()->avatar }}" alt="Avatar"
-                                    class="w-full h-full object-cover object-center">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ auth()->user()->avatar }}" alt="Avatar"
+                                        class="w-full h-full object-cover object-center">
+                                @else
+                                    <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
+                                                y2="100%">
+                                                <stop offset="0%" stop-color="#f97316" />
+                                                <stop offset="100%" stop-color="#7e22ce" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                        <circle cx="50" cy="40" r="15" fill="#ffffff" />
+                                        <circle cx="50" cy="85" r="25" fill="#ffffff" />
+                                    </svg>
+                                @endif
                             </div>
                             <div>
                                 <div class="font-semibold">{{ auth()->user()->name }}</div>
