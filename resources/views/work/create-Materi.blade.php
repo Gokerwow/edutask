@@ -36,7 +36,7 @@
                 <!-- Lampiran -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Lampiran</label>
-                    <div class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
+                    <div class="border-2 border-dashed border-indigo-300 bg-indigo-50 rounded-md p-6 text-center">
                         <svg class="w-12 h-12 place-self-center text-gray-400 mb-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor">
                             <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"/>
                         </svg>
@@ -74,7 +74,7 @@
                 <!-- Tombol Aksi -->
                 <div class="flex justify-end gap-3 pt-4 border-t">
                     <a href="{{ $isEdit? route('materi.show', ['lecture' => $lecture, 'materi' => $materi]) : route('lecture.show', ['id' => $lecture->id]) }}"
-                        class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        class="px-6 py-2 border border-indigo-200 rounded-md text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition duration-200">
                         Batal
                     </a>
                     <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-blue-700">

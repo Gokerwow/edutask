@@ -1,5 +1,33 @@
 
-<div>
+<div class="w-full">
+    <!-- Dashboard Ringkasan -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500">
+            <h3 class="text-gray-500 text-sm font-medium mb-1">Materi Terbaru</h3>
+            <p class="text-xl font-semibold mb-2">{{ $materiTerbaru->title ?? 'Tidak Ada Materi Terbaru' }}</p>
+            @if($materiTerbaru !== null)
+                <p class="text-sm text-gray-500">Diupload {{ $materiTerbaru?->created_at->diffForHumans() }}</p>
+            @endif
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-orange-500">
+            <h3 class="text-gray-500 text-sm font-medium mb-1">Tugas Terbaru</h3>
+            @if ($tugasTerbaru && $tugasTerbaru->count() > 0) {{-- atau !$tugasTerbaru->isEmpty() --}}
+                {{-- Sekarang aman untuk memanggil $tugasTerbaru->first() --}}
+                <p class="text-xl font-semibold mb-2">{{ $tugasTerbaru->title }}</p>
+                <p class="text-sm text-gray-500">Deadline {{ $tugasTerbaru->sisa_waktu ?? 'Tidak Ada Materi Terbaru' }}</p>
+            @else
+                <p class="text-xl font-semibold mb-2">Tidak Ada Tugas Terbaru</p>
+            @endif
+        </div>
+        {{-- <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-purple-500">
+            <h3 class="text-gray-500 text-sm font-medium mb-1">Nilai Rata-rata</h3>
+            <p class="text-3xl font-bold mb-1">85.5</p>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-purple-600 h-2 rounded-full" style="width: 85%"></div>
+            </div>
+        </div> --}}
+    </div>
+
     <!-- Filter dan Konten -->
     <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
         <!-- Tab Navigasi -->
@@ -336,7 +364,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

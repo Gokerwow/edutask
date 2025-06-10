@@ -151,7 +151,7 @@ class LectureController extends Controller
             return redirect()->back()->with('error', 'Anda sudah bergabung pada kelas ini.');
         }
 
-        $gabung = KelasUserRoles::create([
+        KelasUserRoles::create([
             'lecture_id' => $lectureId,
             'user_id' => Auth::id(),
             'role' => 'siswa', // Atur peran sebagai 'siswa'

@@ -77,7 +77,7 @@
             @if($isTentorInThisClass)
                 <div class="flex space-x-3 w-full bg-gray-100 p-6 justify-end">
                     <a href="{{ route('tugas.edit', ['lecture' => $lecture, 'tugas' => $tugas]) }}">
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
                             <!-- SVG Edit Icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />

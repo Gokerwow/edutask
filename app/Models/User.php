@@ -53,13 +53,20 @@ class User extends Authenticatable
         return $this->hasMany(KelasUserRoles::class);
     }
 
+    public function roleDikelas($lectureID, $userID) {
+        return $this->kelasRoles()
+                ->where('user_id', $userID)
+                ->where('lecture_id', $lectureID)
+                ->first();
+    }
+
     // public function kelasSebagaiTentor()
     // {
     //     return $this->kelasRoles()->where('role', 'tentor');
     // }
 
     public function tugas() {
-        return $this->hasMany(userWork::class);
+        return $this->hasMany(Submission::class);
     }
 
     public function lecture() {

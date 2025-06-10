@@ -16,6 +16,8 @@ class ClassContent extends Component
     public $tugasKuis;
     public $pengumuman;
     public $lecture;
+    public $tugasTerbaru;
+    public $materiTerbaru;
     public $isTentorInThisClass = false;
     public $activeTab = 'materiTab';
     public $validtabs = ['materiTab', 'forumTab', 'tugasTab'];
