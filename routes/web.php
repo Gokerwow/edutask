@@ -18,9 +18,10 @@ Route::view('/', 'homepage')
 //     ->name('dashboard');
 
 Route::middleware('auth')->group(function() {
-    Route::get('profile', [profileController::class, 'showProfile'])
-        ->middleware(['auth'])
-        ->name('profile');
+    Route::get('profile', [profileController::class, 'showProfile']) ->
+    name('profile');
+    Route::post('profile/update', [profileController::class, 'update'])
+    ->name('profile.update');
 
     Route::prefix('lecture')->group(function() {
         Route::get('/', [LectureController::class, 'indexLecture'])
