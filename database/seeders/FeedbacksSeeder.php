@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\KelasUserRoles;
+use App\Models\Feedbacks;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class KelasUserRolesSeeder extends Seeder
+class FeedbacksSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        KelasUserRoles::factory(30)->create();
+        Feedbacks::factory(30)->create();
     }
 }

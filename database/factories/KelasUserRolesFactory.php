@@ -34,12 +34,10 @@ class KelasUserRolesFactory extends Factory
             throw new \RuntimeException("Tidak ditemukan kombinasi user dan lecture yang belum terdaftar.");
         }
 
-        $role = ($randomPair->user_id === $randomPair->lecture_user_id) ? 'tentor' : 'siswa';
-
         return [
             'user_id' => $randomPair->user_id,
             'lecture_id' => $randomPair->lecture_id,
-            'role' => $role,
+            'role' => 'siswa',
         ];
     }
 }
