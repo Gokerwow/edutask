@@ -7,6 +7,7 @@ use App\Models\KelasUserRoles;
 use App\Models\Lecture as ModelsLecture;
 use App\Models\materi;
 use App\Models\Notice;
+use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -63,6 +64,8 @@ class LectureController extends Controller
             'role' => 'tentor', // Atur peran sebagai 'tentor'
         ]);
 
+        Alert::success('Success', 'Kelas Berhasil Dibuat.');
+
         return redirect()->route('lecture.show', $lecture->id)
             ->with('success', 'Kelas berhasil dibuat!');
     }
@@ -112,7 +115,6 @@ class LectureController extends Controller
             ->orderBy('created_at', 'desc') // Order at the database level
             ->first();
 
-
         $materiTerbaru = materi::where('lecture_id', $id)
             ->orderBy('created_at', 'desc')
                 ->first();
@@ -124,6 +126,7 @@ class LectureController extends Controller
             ->isNotEmpty(); // Cek apakah hasilnya tidak kosong
 
         $pengumuman = Notice::where('lecture_id', $id)->orderBy('created_at', 'desc')->get();
+
 
         return view('lecture.show', compact(['lecture', 'materi', 'tugas', 'pengumuman', 'tugasTerbaru', 'materiTerbaru', 'isTentorInThisClass']));
     }

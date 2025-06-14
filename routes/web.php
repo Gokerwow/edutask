@@ -5,8 +5,6 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TugasController;
-use App\Http\Controllers\TugasKuisController;
-use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -73,6 +71,8 @@ Route::middleware('auth')->group(function() {
                     ->name('tugas.updateSubmit');
                 Route::get('/{submit}/download', [SubmissionController::class, 'downloadSubmit'])
                     ->name('tugas.downloadSubmit');
+                Route::put('{submission}/beriNilai', [TugasController::class, 'beriNilai'])
+                    ->name('tugas.beriNilai');
             });
 
         });

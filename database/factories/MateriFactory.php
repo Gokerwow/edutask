@@ -20,22 +20,16 @@ class MateriFactory extends Factory
 
     public function definition(): array
     {
-        // Pilihan 1 (Praktik Terbaik untuk Testing/Seeding Bersih):
-        // Gunakan disk palsu agar tidak mengotori direktori storage Anda yang sebenarnya.
-        Storage::fake('public');
+        // Pastikan direktori ada saat seeding
+        Storage::disk('public')->makeDirectory('materi_files');
 
-        // Pilihan 2 (Jika Anda benar-benar ingin file dibuat di storage/app/public):
-        // Pastikan direktori tujuan ada
-        // Storage::disk('public')->makeDirectory('materi_files');
+        $fakeFileName = fake()->words(3, true) . '.pdf';
+        // Buat file PDF palsu 1.5MB
+        $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf');
 
-
-        // 1. Buat file palsu (fake file)
-        // Kita buat nama file yang lebih realistis dan tentukan ukurannya dalam kilobyte.
-        $fakeFileName = fake()->words(3, true) . '.pdf'; // Contoh: 'aut-sed-et.pdf'
-        $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf'); // Buat file PDF palsu 1.5MB
-
-        // 2. Simulasikan penyimpanan file untuk mendapatkan path yang valid
+        // Simpan file ke storage untuk mendapatkan path yang valid
         $filePath = $fakeFile->store('materi_files', 'public');
+
         return [
             'lecture_id' => Lecture::inRandomOrder()->first()->id,
             'title' => fake()->sentence(),
