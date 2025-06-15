@@ -5,13 +5,16 @@
         </div>
     </a>
     <ul class="flex h-full gap-2">
-        <li class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+        <li
+            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
             <a href="{{ route('homepage') }}"><span class="relative z-10 text-lg">Home</span></a>
         </li>
-        <li class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+        <li
+            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
             <a href=""><span class="relative z-10 text-lg">About</span></a>
         </li>
-        <li class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+        <li
+            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
             <a href="{{ route('lecture.index') }}"><span class="relative z-10 text-lg">Classes</span></a>
         </li>
     </ul>
@@ -40,12 +43,8 @@
                     <span>{{ auth()->user()->name }}</span>
                 </button>
 
-                <div
-                    x-show="open"
-                    @click.outside="open = false"
-                    x-transition
-                    class="absolute right-0 mt-2 w-72 bg-white text-gray-900 rounded-xl shadow-xl z-50 border border-gray-200"
-                >
+                <div x-show="open" @click.outside="open = false" x-transition
+                    class="absolute right-0 mt-2 w-72 bg-white text-gray-900 rounded-xl shadow-xl z-50 border border-gray-200">
                     <div class="p-4 border-b border-gray-200">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 rounded-full overflow-hidden">
@@ -75,7 +74,10 @@
                     <div class="p-4 space-y-4">
                         <div>
                             <button class="flex items-center space-x-2 text-sm text-blue-600 hover:underline">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.94 7.28a8 8 0 1011.31 11.31l4.36 4.36a1 1 0 001.41-1.41l-4.36-4.36a8 8 0 00-11.31-11.31zM10 18a8 8 0 110-16 8 8 0 010 16z"/></svg>
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M2.94 7.28a8 8 0 1011.31 11.31l4.36 4.36a1 1 0 001.41-1.41l-4.36-4.36a8 8 0 00-11.31-11.31zM10 18a8 8 0 110-16 8 8 0 010 16z" />
+                                </svg>
                                 <span>Give Feedback</span>
                             </button>
                             <p class="text-xs text-gray-500 ml-6">Bantu Kami Menyempurnakan EduTask</p>
@@ -106,11 +108,13 @@
         @endauth
 
         @guest
-            <a href="{{ route('login') }}" class="cursor-pointer px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-75 transition duration-150 ease-in-out">
+            <a href="{{ route('login') }}"
+                class="cursor-pointer px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-75 transition duration-150 ease-in-out">
                 Login
             </a>
 
-            <a href="{{ route('register') }}" class="cursor-pointer px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition duration-150 ease-in-out">
+            <a href="{{ route('register') }}"
+                class="cursor-pointer px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition duration-150 ease-in-out">
                 Register
             </a>
         @endguest

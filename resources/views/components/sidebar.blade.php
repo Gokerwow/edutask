@@ -1,6 +1,7 @@
 @props(['user'])
 
-<aside class="w-72 bg-white text-gray-800 p-0 flex flex-col h-full shadow-sm rounded-xl border-r border-gray-200 md:block">
+<aside
+    class="w-72 bg-white text-gray-800 p-0 flex flex-col h-full shadow-sm rounded-xl border-r border-gray-200 md:block">
     {{-- Kontainer untuk Profil dan Menu Utama --}}
     <div class="flex-grow overflow-y-auto">
         {{-- Bagian Profil Pengguna di Sidebar --}}
@@ -8,9 +9,26 @@
             <div class="flex items-center space-x-4">
                 <div class="relative">
                     <div class="w-16 h-16 rounded-full border-4 border-orange-300 shadow-lg overflow-hidden">
-                        <img class="w-full h-full object-cover" src="{{ $user->avatar }}" alt="Profile" class="">
+                        @if ($user->avatar)
+                            <img class="w-full h-full object-cover" src="{{ $user->avatar }}" alt="Profile" class="">
+                        @else
+                            <svg class="w-full h-full object-cover" viewBox="0 0 100 100"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
+                                        y2="100%">
+                                        <stop offset="0%" stop-color="#f97316" />
+                                        <stop offset="100%" stop-color="#7e22ce" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                <circle cx="50" cy="40" r="15" fill="#ffffff" />
+                                <circle cx="50" cy="85" r="25" fill="#ffffff" />
+                            </svg>
+                        @endif
                     </div>
-                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white">
+                    </div>
                 </div>
                 <div>
                     <h2 class="text-lg font-semibold text-gray-900">{{ $user->name }}</h2>
@@ -31,7 +49,8 @@
                 Dashboard
             </a>
             <a href="#" {{-- Ganti # dengan route('profile.show') atau sejenisnya --}}
-                class="flex items-center px-3 py-2.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors group font-medium"> {{-- Contoh Active State --}}
+                class="flex items-center px-3 py-2.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors group font-medium">
+                {{-- Contoh Active State --}}
                 <i class="fas fa-user-circle mr-3 w-5 h-5 text-indigo-600"></i>
                 Profil Saya
             </a>

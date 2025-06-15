@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             NoticeSeeder::class,
             MateriSeeder::class,
             SubmissionSeeder::class,
+            FeedbacksSeeder::class,
         ]);
 
     }

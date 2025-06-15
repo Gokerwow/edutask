@@ -43,4 +43,9 @@ class Lecture extends Model
     public function notice() {
         return $this->hasMany(Notice::class);
     }
+
+    public function kelasUserRoles()
+    {
+        return $this->hasMany(KelasUserRoles::class);
+    }
 }
