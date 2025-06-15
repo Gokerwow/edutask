@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\KelasUserRoles;
 use App\Models\Submission;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -62,7 +64,7 @@ class ClassNilai extends Component
             'gradesPerUser' => $gradesPerUser,
             'highestGrade' => $highestGrade,
             'lowestGrade' => $lowestGrade,
-            'avg_grade' => $avg_grade_formatted
+            'avg_grade' => $avg_grade_formatted,
         ]);
     }
 

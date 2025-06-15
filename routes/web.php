@@ -5,6 +5,7 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TugasController;
+use App\Livewire\ClassDetailNilai;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -28,8 +29,10 @@ Route::middleware('auth')->group(function() {
         ->name('lecture.create');
         Route::post('/create', [LectureController::class, 'storeLecture'])
         ->name('lecture.store');
-        Route::get('/{id}', [LectureController::class, 'showLecture'])
+        Route::get('/{lecture}', [LectureController::class, 'showLecture'])
         ->name('lecture.show');
+        Route::get('/{lecture}/nilai', ClassDetailNilai::class)
+        ->name('lecture.detailNilai');
         Route::post('/join', [LectureController::class, 'joinLecture'])
         ->name('lecture.join');
 
@@ -44,6 +47,8 @@ Route::middleware('auth')->group(function() {
                 ->name('materi.update');
             Route::get('/{materi}', [MateriController::class, 'showMateri'])
                 ->name('materi.show');
+            Route::delete('/{materi}', [MateriController::class, 'destroyMateri'])
+                ->name('materi.delete');
             Route::get('/{materi}/download', [MateriController::class, 'downloadMateri'])
             ->name('materi.download');
         });

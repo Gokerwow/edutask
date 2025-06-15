@@ -116,7 +116,7 @@
                         Hapus
                     </button>
                 </div>
-                @if ($submissions)
+                @if (!$submissions->isEmpty())
                     <div x-data="{ submissionAction: '' }" class="bg-white rounded-lg shadow-md p-6">
                         <h2 class="text-xl font-semibold text-gray-800 mb-6">Tugas Yang Telah Dikumpulkan</h2>
 

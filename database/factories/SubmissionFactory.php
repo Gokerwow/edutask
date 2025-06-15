@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Assignment;
 use App\Models\KelasUserRoles;
 use App\Models\Submission;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -24,23 +23,41 @@ class SubmissionFactory extends Factory
     {
         Storage::disk('public')->makeDirectory('submission_files');
 
-        // Loop untuk menemukan kombinasi yang valid
+        // Loop untuk menemukan kombinasi user dan assignment yang unik
         while (true) {
-            // 1. Ambil role siswa secara acak
             $siswaRole = KelasUserRoles::where('role', 'siswa')->inRandomOrder()->first();
 
             if ($siswaRole) {
-                // 2. Ambil tugas yang ada di kelas yang sama dengan siswa tersebut
                 $assignment = Assignment::where('lecture_id', $siswaRole->lecture_id)->inRandomOrder()->first();
 
                 if ($assignment) {
-                    // 3. Cek apakah siswa ini sudah pernah mengumpulkan tugas ini
                     $submissionExists = Submission::where('assignment_id', $assignment->id)
                         ->where('user_id', $siswaRole->user_id)
                         ->exists();
 
                     if (!$submissionExists) {
-                        // Jika semua kondisi terpenuhi, kita buat data submission
+                        // ======================================================
+                        // AWAL DARI PERBAIKAN
+                        // ======================================================
+
+                        // 1. Tentukan status terlebih dahulu secara acak.
+                        $status = fake()->randomElement(['submitted', 'graded', 'cancelled']);
+
+                        // 2. Siapkan variabel grade dan data terkait dengan nilai default null.
+                        $grade = null;
+                        $comment = null;
+                        $graded_at = null;
+
+                        // 3. Logika kondisional: Isi nilai HANYA jika statusnya 'graded'.
+                        //    Ini membuat data Anda lebih logis dan konsisten.
+                        if ($status === 'graded') {
+                            $grade = fake()->numberBetween(70, 100);
+                            $comment = fake()->sentence();
+                            $graded_at = fake()->dateTimeThisMonth();
+                        }
+
+                        // Untuk status 'submitted' dan 'cancelled', semua variabel di atas akan tetap null.
+
                         $fakeFileName = fake()->words(3, true) . '.pdf';
                         $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf');
                         $filePath = $fakeFile->store('submission_files', 'public');
@@ -49,18 +66,19 @@ class SubmissionFactory extends Factory
                             'description' => fake()->sentence(),
                             'file_path' => $filePath,
                             'original_fileName' => $fakeFileName,
-                            'status' => fake()->randomElement(['submitted', 'graded', 'cancelled']),
+                            'status' => $status, // Gunakan status yang sudah kita buat
                             'assignment_id' => $assignment->id,
                             'user_id' => $siswaRole->user_id,
-                            'grade' => fake()->optional()->numberBetween(70, 100),
-                            'comment' => fake()->optional()->sentence(),
-                            'graded_at' => fake()->optional()->dateTimeThisMonth(),
+                            'grade' => $grade, // Gunakan grade yang sudah kita tentukan
+                            'comment' => $comment, // Gunakan comment yang sudah kita tentukan
+                            'graded_at' => $graded_at, // Gunakan tanggal yang sudah kita tentukan
                         ];
+                        // ======================================================
+                        // AKHIR DARI PERBAIKAN
+                        // ======================================================
                     }
                 }
             }
-            // Jika tidak ditemukan kombinasi yang valid, loop akan terus berjalan
-            // atau Anda bisa menambahkan batas loop untuk menghindari infinite loop jika data tidak memungkinkan
         }
     }
 }

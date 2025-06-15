@@ -192,8 +192,14 @@ class MateriController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyMateri(Lecture $lecture, materi $materi)
     {
-        //
+        $materi->delete();
+
+        Alert::success('Berhasil Dihapus','Materi Berhasil Dihapus!');
+
+        return redirect()->route('lecture.show', [
+            'id' => $lecture->id,
+        ]);
     }
 }

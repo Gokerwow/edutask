@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\Lecture;
 use App\Models\Assignment;
 use App\Models\KelasUserRoles;
 use App\Models\Lecture as ModelsLecture;
@@ -97,25 +98,26 @@ class LectureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showLecture(string $id)
+    public function showLecture(Lecture $lecture)
     {
         $lecture = ModelsLecture::withCount('user') // Pertama, siapkan query dengan count
                     ->with('assignment')
-                    ->findOrFail($id);   // Kemudian, ambil model berdasarkan ID
+                    ->findOrFail($lecture->id);   // Kemudian, ambil model berdasarkan ID
 
-        $materi = materi::where('lecture_id', $id)
+        dd($lecture);
+        $materi = materi::where('lecture_id', $lecture->id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $tugas = Assignment::where('lecture_id', $id)
+        $tugas = Assignment::where('lecture_id', $lecture->id)
             ->orderBy('created_at', 'desc') // Order at the database level
             ->get();
 
-        $tugasTerbaru = Assignment::where('lecture_id', $id)
+        $tugasTerbaru = Assignment::where('lecture_id', $lecture->id)
             ->orderBy('created_at', 'desc') // Order at the database level
             ->first();
 
-        $materiTerbaru = materi::where('lecture_id', $id)
+        $materiTerbaru = materi::where('lecture_id', $lecture->id)
             ->orderBy('created_at', 'desc')
                 ->first();
 
@@ -125,7 +127,7 @@ class LectureController extends Controller
             ->where('role', 'tentor')
             ->isNotEmpty(); // Cek apakah hasilnya tidak kosong
 
-        $pengumuman = Notice::where('lecture_id', $id)->orderBy('created_at', 'desc')->get();
+        $pengumuman = Notice::where('lecture_id', $lecture->id)->orderBy('created_at', 'desc')->get();
 
 
         return view('lecture.show', compact(['lecture', 'materi', 'tugas', 'pengumuman', 'tugasTerbaru', 'materiTerbaru', 'isTentorInThisClass']));

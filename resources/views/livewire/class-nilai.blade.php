@@ -25,12 +25,6 @@
             <div class="flex space-x-3">
                 <select
                     class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option>Semua Kelompok</option>
-                    <option>Kelompok A</option>
-                    <option>Kelompok B</option>
-                </select>
-                <select
-                    class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option>Urutkan Berdasarkan</option>
                     <option>Nama A-Z</option>
                     <option>Nama Z-A</option>
@@ -42,6 +36,8 @@
     </div>
 
     <!-- Daftar Nilai (Card-based) -->
+    @if($gradesPerUser)
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         @foreach ($gradesPerUser as $key => $gradesInfo)
             <!-- Siswa 1 -->
@@ -79,17 +75,17 @@
                         </div>
                         <div>
                             <span
-                                class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium">{{ $gradesInfo->letter_grade ?? 0}}</span>
+                                class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium">{{ $gradesInfo->letter_grade ?? 0 }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="border-t border-gray-100 px-5 py-3 bg-gray-50 flex justify-end space-x-3">
-                    <button class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">Edit</button>
-                    <button class="text-sm text-gray-600 hover:text-gray-900 font-medium">Detail</button>
+                    <a href="{{ route('lecture.detailNilai') }}" class="text-sm text-gray-600 hover:text-gray-900 font-medium">Detail</a>
                 </div>
             </div>
         @endforeach
     </div>
+    @endif
 
     <!-- Statistik Nilai -->
     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -102,9 +98,9 @@
         </div>
         <div class="bg-white p-6 rounded-xl shadow-md">
             <h3 class="text-gray-500 text-sm font-medium mb-1">Nilai Tertinggi</h3>
-            <p class="text-3xl font-bold mb-1">{{ $highestGrade->grade }}</p>
+            <p class="text-3xl font-bold mb-1">{{ $highestGrade->grade ?? '0' }}</p>
             <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-green-600 h-2 rounded-full" style="width: {{ $highestGrade->grade }}%"></div>
+                <div class="bg-green-600 h-2 rounded-full" style="width: {{ $highestGrade->grade ?? '0' }}%"></div>
             </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-md">

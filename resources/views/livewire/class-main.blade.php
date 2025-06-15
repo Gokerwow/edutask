@@ -34,7 +34,7 @@
                 <!-- Profil Dosen -->
                 <div class="p-6 border-b">
                     <div class="flex items-center space-x-4">
-                        @if($lecture->tentor->avatar)
+                        @if ($lecture->tentor->avatar)
                             <img class="w-12 h-12 rounded-full object-cover" src="{{ asset($lecture->tentor->avatar) }}"
                                 alt="{{ $lecture->tentor->name }}">
                         @else
@@ -126,7 +126,11 @@
             @elseif($activeMainTab === 'partisipanTab')
                 @livewire('class-participant', ['lecture' => $lecture])
             @elseif($activeMainTab === 'nilaiTab')
-                @livewire('class-nilai', ['lecture' => $lecture, 'tugas' => $tugas])
+                @if ($isTentor)
+                    @livewire('class-nilai', ['lecture' => $lecture, 'tugas' => $tugas])
+                @else
+                    @livewire('class-detailNilai', ['lecture' => $lecture, 'tugas' => $tugas])
+                @endif
             @endif
         </div>
     </div>

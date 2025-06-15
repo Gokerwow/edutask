@@ -43,7 +43,7 @@
             </div>
 
             <div class="border-t border-purple-300 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-purple-100 mb-4 md:mb-0">© 2023 BrandKu. All rights reserved.</p>
+                <p class="text-purple-100 mb-4 md:mb-0">© 2025 EduTask. All rights reserved.</p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-purple-100 hover:text-orange-300 transition">Privacy Policy</a>
                     <a href="#" class="text-purple-100 hover:text-orange-300 transition">Terms of Service</a>

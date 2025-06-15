@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\KelasUserRoles;
+use App\Models\Submission;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ClassMain extends Component
@@ -24,6 +27,13 @@ class ClassMain extends Component
     }
     public function render()
     {
-        return view('livewire.class-main');
+        $isTentor = KelasUserRoles::where('user_id', Auth::id())
+        ->where('lecture_id', $this->lecture->id)
+        ->where('role', 'tentor')
+        ->first();
+
+        return view('livewire.class-main', [
+            'isTentor' => $isTentor
+        ]);
     }
 }
