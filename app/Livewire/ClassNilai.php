@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Assignment;
 use App\Models\KelasUserRoles;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,7 @@ class ClassNilai extends Component
             ->orderBy('grade', 'asc')
             ->first();
 
+
         // 1. Dapatkan dulu nilai rata-rata dari database
         $average = Submission::whereHas('assignment', function($query) {
                 $query->where('lecture_id', $this->lecture->id);
@@ -45,18 +47,38 @@ class ClassNilai extends Component
         // Jika $average adalah NULL (tidak ada nilai), kita ubah jadi 0 dulu
         $avg_grade_formatted = number_format($average ?? 0, 2);
 
-        // 2. Kelompokkan collection berdasarkan user_id
-        $gradesPerUser = $submissions->groupBy('user_id')->map(function ($userSubmissions) {
-            // Untuk setiap grup (setiap user), buat objek baru yang berisi info
-            $avgGrade = $userSubmissions->avg('grade'); // Hitung rata-rata sekali saja
+        // 1. Ambil SEMUA tugas yang relevan untuk mata pelajaran ini SEKALI SAJA.
+        $allAssignmentsForLecture = Assignment::where('lecture_id', $this->lecture->id)->get();
+
+        // 2. Ambil SEMUA submission yang relevan dalam satu query, dan eager-load data user.
+        $allSubmissionsForLecture = Submission::whereIn('assignment_id', $allAssignmentsForLecture->pluck('id'))
+            ->with('user') // Eager load untuk menghindari N+1 query
+            ->whereNot('status', 'cancelled')
+            ->get();
+
+        // 3. Kelompokkan submission berdasarkan user_id, lalu buat objek data yang lengkap.
+        $gradesPerUser = $allSubmissionsForLecture->groupBy('user_id')->map(function ($userSubmissions, $userId) use ($allAssignmentsForLecture) {
+
+            // Ambil data user dari submission pertama (sudah di-eager load)
+            $user = $userSubmissions->first()->user;
+
+            // Lakukan semua kalkulasi dari data yang sudah ada di memori
+            $avg_grade = $userSubmissions->avg('grade');
+            $letter_grade = $this->letterGrade($avg_grade);
+
+            // Buat objek akhir yang akan dikirim ke view
             return (object) [
-                'user_name' => $userSubmissions->first()->user->name,
-                'user_email' => $userSubmissions->first()->user->email,
-                'user_avatar' => $userSubmissions->first()->user->avatar ?? null,
-                'grades' => $userSubmissions->pluck('grade'), // Ambil semua nilai
-                'average_grade' => number_format($avgGrade ?? 0, 2), // Hitung rata-rata
-                'letter_grade' => $this->letterGrade($avgGrade),
-                'submission_count' => $userSubmissions->count(), // Hitung jumlah
+                // Data untuk kartu ringkasan
+                'user_id' => $userId,
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+                'user_avatar' => $user->avatar,
+                'average_grade' => number_format($avg_grade ?? 0, 2),
+                'letter_grade' => $letter_grade,
+
+                // Data lengkap yang dibutuhkan oleh modal
+                'user' => $user,
+                'assignments' => $allAssignmentsForLecture,
             ];
         });
 

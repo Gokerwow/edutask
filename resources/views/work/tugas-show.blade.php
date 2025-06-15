@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Detail Tugas</h1>
             <!-- Tombol Kembali -->
-            <a href="{{ route('lecture.show', ['id' => $lecture->id]) }}">
+            <a href="{{ route('lecture.show', ['lecture' => $lecture->id]) }}">
                 <button
                     class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center">
                     <!-- SVG Arrow Left Icon -->

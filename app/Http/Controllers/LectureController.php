@@ -98,42 +98,42 @@ class LectureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showLecture(Lecture $lecture)
+    public function showLecture(string $id)
     {
         $lecture = ModelsLecture::withCount('user') // Pertama, siapkan query dengan count
-                    ->with('assignment')
-                    ->findOrFail($lecture->id);   // Kemudian, ambil model berdasarkan ID
+            ->with('assignment')
+            ->findOrFail($id);   // Kemudian, ambil model berdasarkan ID
 
-        dd($lecture);
-        $materi = materi::where('lecture_id', $lecture->id)
+        $materi = materi::where('lecture_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $tugas = Assignment::where('lecture_id', $lecture->id)
+        $tugas = Assignment::where('lecture_id', $id)
             ->orderBy('created_at', 'desc') // Order at the database level
             ->get();
 
-        $tugasTerbaru = Assignment::where('lecture_id', $lecture->id)
+        $tugasTerbaru = Assignment::where('lecture_id', $id)
             ->orderBy('created_at', 'desc') // Order at the database level
             ->first();
 
-        $materiTerbaru = materi::where('lecture_id', $lecture->id)
+        $materiTerbaru = materi::where('lecture_id', $id)
             ->orderBy('created_at', 'desc')
-                ->first();
+            ->first();
 
-            // Cek apakah pengguna yang sedang login adalah tentor DI KELAS INI
+        // Cek apakah pengguna yang sedang login adalah tentor DI KELAS INI
         $isTentorInThisClass = Auth::user()->kelasRoles
             ->where('lecture_id', $lecture->id) // Filter berdasarkan ID kelas dari tugas ini
             ->where('role', 'tentor')
             ->isNotEmpty(); // Cek apakah hasilnya tidak kosong
 
-        $pengumuman = Notice::where('lecture_id', $lecture->id)->orderBy('created_at', 'desc')->get();
+        $pengumuman = Notice::where('lecture_id', $id)->orderBy('created_at', 'desc')->get();
 
 
         return view('lecture.show', compact(['lecture', 'materi', 'tugas', 'pengumuman', 'tugasTerbaru', 'materiTerbaru', 'isTentorInThisClass']));
     }
 
-    public function joinLecture(Request $request) {
+    public function joinLecture(Request $request)
+    {
         $request->validate([
             'join-code' => 'required|string|max:7',
         ]);
@@ -149,7 +149,7 @@ class LectureController extends Controller
         $lectureId = $lectureExist->id;
 
         $alreadyJoined = KelasUserRoles::where('lecture_id', $lectureId)
-        ->where('user_id', Auth::id())->exists();
+            ->where('user_id', Auth::id())->exists();
 
         if ($alreadyJoined) {
             Alert::warning('Tidak Bisa Bergabung', 'Anda sudah bergabung pada kelas ini.');
@@ -192,5 +192,27 @@ class LectureController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exitLecture(string $id)
+    {
+        // 1. Dapatkan user yang sedang login.
+        $user = Auth::user();
+
+        $kelas = KelasUserRoles::where('lecture_id', $id)
+            ->where('user_id', $user->id)
+            ->delete();
+
+        // Jika Anda butuh nama kelas untuk pesan notifikasi
+        $lecture = ModelsLecture::findOrFail($id);
+        $lectureName = $lecture ? $lecture->name : 'tersebut';
+
+        // 2. Gunakan metode detach() pada OBJEK RELASI yang benar.
+        // Perhatikan penggunaan ->lectures() dengan 's' dan '()'.
+
+        Alert::success('Berhasil Keluar', 'Anda Berhasil Keluar dari Kelas :' . $lectureName);
+        // 3. Arahkan kembali pengguna.
+        return redirect()->route('lecture.index')
+            ->with('success', 'Anda telah berhasil keluar dari kelas: ' . $lectureName);
     }
 }

@@ -71,11 +71,11 @@
         </a>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit"
+            <a type="submit"
                 class="flex items-center w-full mt-1 px-3 py-2.5 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors group font-medium">
                 <span class="fas fa-sign-out-alt mr-3 w-5 h-5 text-red-500 group-hover:text-red-600"></span>
                 Keluar
-            </button>
+            </a>
         </form>
     </div>
 </aside>

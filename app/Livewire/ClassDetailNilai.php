@@ -6,11 +6,13 @@ use App\Models\Assignment;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Models\Lecture; // Pastikan ini ditambahkan di atas
 
 class ClassDetailNilai extends Component
 {
     public $lecture;
     public $tugas;
+
 
     public function render()
     {
@@ -20,27 +22,27 @@ class ClassDetailNilai extends Component
         $avg_grade = Submission::whereHas('assignment', function ($query) {
             $query->where('lecture_id', $this->lecture->id);
         })
-        ->where('user_id', $userId)
-        ->avg('grade');
+            ->where('user_id', $userId)
+            ->avg('grade');
 
         $assignments = Assignment::where('lecture_id', $this->lecture->id)
-        ->with(['submissions' => function ($query) use ($userId) {
-            // Filter relasi 'submissions' agar hanya mengambil
-            // submission dengan user_id yang sesuai.
-            $query->where('user_id', $userId);
-        }])
-        ->get();
+            ->with(['submissions' => function ($query) use ($userId) {
+                // Filter relasi 'submissions' agar hanya mengambil
+                // submission dengan user_id yang sesuai.
+                $query->where('user_id', $userId);
+            }])
+            ->get();
 
 
         $assignmentDone = Submission::whereHas('assignment', function ($query) {
             $query->where('lecture_id', $this->lecture->id);
         })
-        ->where('user_id', $userId)
-        ->whereNot('status', 'cancelled')
-        ->count();
+            ->where('user_id', $userId)
+            ->whereNot('status', 'cancelled')
+            ->count();
 
         $assignmentTotal = Assignment::where('lecture_id', $this->lecture->id)
-        ->count();
+            ->count();
 
         $assignmentNotDone = $assignmentTotal - $assignmentDone;
 
@@ -65,7 +67,8 @@ class ClassDetailNilai extends Component
         ]);
     }
 
-    public function percentage($number, $total) {
+    public function percentage($number, $total)
+    {
         $percent = $number / $total * 100;
         return $percent;
     }

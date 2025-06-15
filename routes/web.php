@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function() {
         ->name('lecture.store');
         Route::get('/{lecture}', [LectureController::class, 'showLecture'])
         ->name('lecture.show');
-        Route::get('/{lecture}/nilai', ClassDetailNilai::class)
-        ->name('lecture.detailNilai');
+        Route::delete('/{lecture}', [LectureController::class, 'exitLecture'])
+        ->name('lecture.out');
         Route::post('/join', [LectureController::class, 'joinLecture'])
         ->name('lecture.join');
 

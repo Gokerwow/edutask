@@ -196,10 +196,10 @@ class MateriController extends Controller
     {
         $materi->delete();
 
-        Alert::success('Berhasil Dihapus','Materi Berhasil Dihapus!');
+        Alert::success('Berhasil Dihapus', 'Materi Berhasil Dihapus!');
 
         return redirect()->route('lecture.show', [
-            'id' => $lecture->id,
+            'lecture' => $lecture->id,
         ]);
     }
 }
