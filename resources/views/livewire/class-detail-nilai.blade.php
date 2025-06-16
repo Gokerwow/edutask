@@ -95,7 +95,7 @@
                     </svg>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span
-                            class="text-sm font-bold text-gray-800">{{ number_format($assignmentDonePercent ?? 0, 2) ?? 0 }}</span>
+                            class="text-xs font-bold text-gray-800">{{ number_format($assignmentDonePercent ?? 0, 2) ?? 0 }}%</span>
                     </div>
                 </div>
                 <div>
@@ -175,10 +175,10 @@
                             <div class="text-sm text-gray-900">{{ $assignment->deadline->format('d M Y') }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if ($userSubmission)
+                            @if ($userSubmission && $userSubmission->status != 'cancelled' )
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {{ $userSubmission->status === 'cancelled' ? 'Belum Tuntas' : 'Tuntas' }}
+                                    Tuntas
                                 </span>
                             @else
                                 <span

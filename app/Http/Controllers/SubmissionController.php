@@ -7,6 +7,7 @@ use App\Models\Lecture;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -25,6 +26,14 @@ class SubmissionController extends Controller
      */
     public function createSubmission(Lecture $lecture, Assignment $tugas)
     {
+        $submissionExist = Submission::where('assignment_id', $tugas->id)
+            ->where('user_id', Auth::id())
+            ->get();
+
+        if (!$submissionExist->isEmpty()) {
+            abort(404);
+        }
+
         $isEdit = false;
         return view('work.submission', [
             'lecture' => $lecture,
@@ -38,6 +47,7 @@ class SubmissionController extends Controller
      */
     public function storeSubmission(Request $request, Lecture $lecture, Assignment $tugas)
     {
+
         $validator = Validator::make($request->all(), [
             'submission-description' => 'nullable|string|max:500',
             'submission-file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,png,mp4|max:2048',
@@ -145,8 +155,85 @@ class SubmissionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Lecture $lecture, Assignment $tugas, Submission $submission)
     {
-        //
+        // Ambil data terkait untuk otorisasi
+        $lecture = $tugas->lecture;
+        $user = Auth::user();
+
+        // Variabel untuk menandai apakah penghapusan diizinkan
+        $canDelete = false;
+
+        // Skenario 1: Pengguna adalah Tentor di kelas ini
+        if ($user->id === $lecture->user_id) {
+            $canDelete = true;
+        }
+
+        // Skenario 2: Pengguna adalah Mahasiswa pemilik submission
+        if ($user->id === $submission->user_id) {
+            // Mahasiswa hanya bisa hapus jika belum dinilai DAN belum deadline
+            if (is_null($submission->grade) && now()->lessThan($tugas->deadline)) {
+                $canDelete = true;
+            }
+        }
+
+        // Jika tidak diizinkan, hentikan proses
+        if (!$canDelete) {
+            Alert::error('Gagal', 'Tugas Sudah Dinilai, Anda tidak diizinkan untuk menghapus pengumpulan ini.');
+            return redirect()->back();
+        }
+
+        // Jika diizinkan, lanjutkan proses penghapusan
+        try {
+            // Hapus file dari storage terlebih dahulu jika ada
+            if ($submission->file_path && Storage::disk('public')->exists($submission->file_path)) {
+                Storage::disk('public')->delete($submission->file_path);
+            }
+
+            // Hapus record dari database
+            $submission->update([
+                'status' => 'cancelled',
+                'deleted_at' => now(),
+            ]);
+
+
+            Alert::success('Berhasil', 'Pengumpulan tugas telah dihapus.');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Terjadi kesalahan saat menghapus data.');
+            return redirect()->back();
+        }
+    }
+
+    public function beriNilai(Request $request, Lecture $lecture, Assignment $tugas, Submission $submission)
+    {
+        $validator = Validator::make($request->all(), [
+            'submission-grade' => 'required|string|max:100',
+            'submission-comment' => 'nullable|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            $errorList = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorList .= '<li>' . e($error) . '</li>';
+            }
+            $errorList .= '</ul>';
+
+            Alert::error('Oops! Terjadi Kesalahan', $errorList)->toHtml();
+            return redirect()->back()->withInput();
+        };
+
+        $validated_data = $validator->validated();
+
+        $submission->update([
+            'status' => 'graded',
+            'grade' => $validated_data['submission-grade'],
+            'lecturer_comment' => $validated_data['submission-comment'],
+            'graded_at' => now(),
+        ]);
+
+        Alert::success('Berhasil', 'Nilai telah berhasil disimpan.');
+
+        return redirect()->back();
     }
 }

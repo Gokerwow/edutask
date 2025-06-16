@@ -156,7 +156,7 @@
                                 <div class="flex items-center">
                                     @if ($joinedLecture->lecture->tentor->avatar)
                                         <img src="{{ $joinedLecture->lecture->tentor->avatar }}" alt="Instructor"
-                                            class="w-6 h-6 rounded-full mr-2">
+                                            class="w-6 h-6 rounded-full mr-2 object-cover">
                                     @else
                                         <svg class="w-6 h-6 rounded-full mr-2" viewBox="0 0 100 100"
                                             xmlns="http://www.w3.org/2000/svg">

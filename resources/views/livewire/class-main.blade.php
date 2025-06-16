@@ -2,10 +2,10 @@
     <!-- Banner Kuliah -->
     <div class="relative max-w-full h-[500px] mb-8 rounded-xl overflow-hidden shadow-lg">
         <div
-            class="absolute z-0 w-full h-full course-image overflow-hidden flex justify-center items-center bg-[linear-gradient(135deg,#f97316_0%,#7e22ce_100%)]">
+            class="absolute z-0 w-full h-full course-image overflow-hidden flex justify-center items-center bg-gradient-to-r from-blue-600 to-purple-600">
             @if ($lecture->banner)
                 <img class="hover:scale-110 transition duration-500 w-full h-full object-cover"
-                    src="{{ $lecture->banner }}" alt="Banner {{ $lecture->name ?? 'Kuliah' }}">
+                    src="{{ asset($lecture->banner) }}" alt="Banner {{ $lecture->name ?? 'Kelas' }}">
             @endif
         </div>
         <div
@@ -37,7 +37,7 @@
                 <div class="p-6 border-b">
                     <div class="flex items-center space-x-4">
                         @if ($lecture->tentor->avatar)
-                            <img class="w-12 h-12 rounded-full object-cover" src="{{ $lecture->tentor->avatar }}"
+                            <img class="w-12 h-12 rounded-full object-cover" src="{{ asset($lecture->tentor->avatar) }}"
                                 alt="{{ $lecture->tentor->name }}">
                         @else
                             <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
