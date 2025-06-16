@@ -15,7 +15,7 @@ class FeedbackController extends Controller
         ]);
 
         Feedback::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'feedback' => $request->feedback,
         ]);
 
@@ -28,7 +28,7 @@ class FeedbackController extends Controller
     }
 
     public function index() {
-        $feedbacks = Feedback::with('user')->latest()->get(); // mengambil feedback beserta user-nya
+        $feedbacks = Feedback::with('user')->latest()->paginate(10); // mengambil feedback beserta user-nya
         return view('feedback.indexFeedback', compact('feedbacks'));
     }
 }
