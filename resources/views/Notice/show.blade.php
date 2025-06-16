@@ -96,7 +96,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="font-medium text-red-600 hover:text-red-800">
-                                            Hapus
+                                            Hapus Komentar
                                         </button>
                                     </form>
                                 @endif
