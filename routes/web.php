@@ -5,10 +5,12 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TugasController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\TugasKuisController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
+
 use Laravel\Socialite\Facades\Socialite;
 
 Route::view('/', 'homepage')
@@ -96,7 +98,14 @@ Route::middleware('auth')->group(function () {
                     ->name('update');
                 Route::post('/{notice}/comments', [App\Http\Controllers\NoticeController::class, 'storeComment'])
                     ->name('comment.store');
+
+
+
             });
+
+            Route::delete('notice/{notice}/comments/{comment}', [NoticeController::class, 'destroyComment'])
+                        ->name('comment.destroy');
+
         });
     });
 

@@ -91,10 +91,7 @@
                             <div class="flex items-center gap-3 text-xs">
                                 {{-- Tampilkan tombol hanya jika user adalah pemilik komentar --}}
                                 @if (Auth::id() == $comment->user_id)
-                                    <a href="{{-- route('notice.comment.edit', [$lecture, $notice, $comment]) --}}" class="font-medium text-blue-600 hover:text-blue-800">
-                                        Edit
-                                    </a>
-                                    <form action="{{-- route('notice.comment.destroy', [$lecture, $notice, $comment]) --}}" method="POST"
+                                    <form action="{{ route('comment.destroy', [$lecture, $notice, $comment]) }}" method="POST"
                                         onsubmit="return confirm('Anda yakin ingin menghapus komentar ini?');">
                                         @csrf
                                         @method('DELETE')
