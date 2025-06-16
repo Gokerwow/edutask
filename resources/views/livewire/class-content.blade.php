@@ -332,10 +332,7 @@
                     <div class="ml-4 flex-1">
                         <h3 class="text-lg font-medium text-gray-900">Deskripsi Kelas</h3>
                         <p class="mt-1 text-sm text-gray-600">
-                            Kelas ini membahas fundamental algoritma dan struktur data dengan implementasi praktis
-                            menggunakan Python.
-                            Materi mencakup sorting algorithms, linked lists, trees, dan graph traversal.
-                        </p>
+                            {{ $lecture->description }}
                         <div class="mt-4 grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-xs font-medium text-gray-500">Dosen Pengampu</p>
