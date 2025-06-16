@@ -40,9 +40,9 @@
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Role</th>
-                        <th scope="col"
+                        {{-- <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
-                        </th>
+                        </th> --}}
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -85,10 +85,10 @@
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ strtoupper($participant->role ?? 'Status Tidak Tersedia') }}</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            {{-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                                 <button class="text-red-600 hover:text-red-900">Hapus</button>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
 
