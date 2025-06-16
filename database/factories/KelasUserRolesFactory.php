@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\KelasUserRoles;
 use App\Models\Lecture;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,25 +20,25 @@ class KelasUserRolesFactory extends Factory
      */
     public function definition(): array
     {
-        // Cari kombinasi yang belum ada
-        $randomPair = DB::selectOne("
-            SELECT u.id AS user_id, l.id AS lecture_id, l.user_id AS lecture_user_id
-            FROM users u
-            CROSS JOIN lectures l
-            LEFT JOIN kelasUserRoles kur ON kur.user_id = u.id AND kur.lecture_id = l.id
-            WHERE kur.id IS NULL
-            ORDER BY RAND()
-            LIMIT 1
-        ");
+        // Loop sampai kita menemukan kombinasi user dan lecture yang unik
+        while (true) {
+            $user = User::inRandomOrder()->first();
+            $lecture = Lecture::inRandomOrder()->first();
 
-        if (!$randomPair) {
-            throw new \RuntimeException("Tidak ditemukan kombinasi user dan lecture yang belum terdaftar.");
+            // Cek apakah user sudah terdaftar di kelas ini (sebagai tentor atau siswa)
+            $exists = KelasUserRoles::where('user_id', $user->id)
+                ->where('lecture_id', $lecture->id)
+                ->exists();
+
+            // Jika belum ada, kita bisa gunakan kombinasi ini dan keluar dari loop
+            if (!$exists) {
+                return [
+                    'user_id' => $user->id,
+                    'lecture_id' => $lecture->id,
+                    'role' => 'siswa', // Factory ini khusus untuk menambahkan siswa
+                ];
+            }
+            // Jika sudah ada, loop akan otomatis berlanjut untuk mencari kombinasi lain
         }
-
-        return [
-            'user_id' => $randomPair->user_id,
-            'lecture_id' => $randomPair->lecture_id,
-            'role' => 'siswa',
-        ];
     }
 }

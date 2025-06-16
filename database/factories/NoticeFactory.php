@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Lecture;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +19,9 @@ class NoticeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->sentence(5),
-            'lecture_id' => Lecture::inRandomOrder()->first()->id
+            // Mengambil ID user dan lecture secara acak dari yang sudah ada
+            'lecture_id' => Lecture::inRandomOrder()->first()->id ?? Lecture::factory(),
+            'description' => $this->faker->paragraph(3), // Membuat isi dengan 3 paragraf
         ];
     }
 }
