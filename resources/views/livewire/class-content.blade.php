@@ -180,7 +180,7 @@
                             </div>
                             <div class="ml-4 flex-1">
                                 <div class="flex items-center justify-between">
-                                    <a href="{{ route('tugas.show', ['lecture' => $lecture, 'tugas' => $task, 'isTentorInThisClass' => $isTentorInThisClass]) }}"
+                                    <a href="{{ route('tugas.show', ['lecture' => $lecture, 'tugas' => $task]) }}"
                                         class="text-lg font-medium text-gray-900">{{ $task->title }}</a>
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">

@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('status')->default('submitted'); // 'submitted', 'cancelled', 'graded'
             $table->foreignId('assignment_id')->constrained('assignments')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Assuming submissions are linked to users
-            $table->integer('grade')->nullable(); // Optional field for grade
+            $table->integer('grade')->default(0); // Optional field for grade
             $table->text('comment')->nullable(); // Optional field for comments
             $table->timestamp('graded_at')->nullable(); // Optional field for when the submission was graded
             $table->timestamps();
+            $table->softDeletes(); // Tambahkan baris ini
         });
     }
 

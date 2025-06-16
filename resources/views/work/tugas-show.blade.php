@@ -104,17 +104,21 @@
                             Edit
                         </button>
                     </a>
-                    <button
-                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center">
-                        <!-- SVG Trash Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Hapus
-                    </button>
+                    <form class="delete-form" action="{{ route('tugas.delete', ['lecture' => $lecture, 'tugas' => $tugas]) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center">
+                            <!-- SVG Trash Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Hapus
+                        </button>
+                    </form>
                 </div>
                 @if (!$submissions->isEmpty())
                     <div x-data="{ submissionAction: '' }" class="bg-white rounded-lg shadow-md p-6">
@@ -216,7 +220,7 @@
                                                         x-on:click="submissionAction = '{{ route('tugas.beriNilai', ['lecture' => $lecture, 'tugas' => $tugas, 'submission' => $submission]) }}';
                                                         $dispatch('open-modal', 'nilaiTugasModal');"
                                                         class="px-3 py-2 border border-orange-600 text-orange-600 rounded-md text-xs font-medium hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                                                        Nilai
+                                                        {{ $submission->grade ? 'Ubah Nilai' : 'Nilai' }}
                                                     </button>
                                                 </div>
                                             </td>
@@ -241,10 +245,7 @@
                                             Sudah Dikumpulkan</p>
                                     </div>
 
-                                    <form
-                                        :action="submissionAction"
-                                        action=""
-                                        method="POST">
+                                    <form :action="submissionAction" action="" method="POST">
                                         @csrf
                                         @method('put')
                                         <div class="">
@@ -257,7 +258,7 @@
                                                 class="mt-1 flex items-center justify-between w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-500 focus-within:border-indigo-500">
 
                                                 <input type="number" name="submission-grade" id="submission-grade"
-                                                    min="0" max="100"
+                                                    min="0" max="100" value="{{ $submission->grade ?? '' }}"
                                                     class="flex-grow border-none p-0 focus:ring-0 sm:text-sm"
                                                     placeholder="Masukkan nilai" required>
 
@@ -271,7 +272,8 @@
                                                 class="block text-sm font-medium text-gray-700 mb-1">Beri Komentar
                                                 (opsional)</label>
                                             <input type="text" name="submission-comment" id="submission-comment"
-                                                class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                value="{{ $submission->comment ?? '' }}"
+                                                class="mt-1 truncate block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 placeholder="Masukkan Komentar">
                                         </div>
 
@@ -295,7 +297,7 @@
                     </div>
                 @endif
             @else
-                @if ($submissionExists)
+                @if ($submissionExists && is_null($submissionExists->deleted_at))
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h2 class="text-xl font-semibold text-gray-800 mb-6">Tugas Anda</h2>
 
@@ -332,12 +334,35 @@
                                 </a>
                             </div>
                         </div>
-
                         <div class="flex justify-end">
-                            <a href="{{ route('tugas.editSubmit', ['lecture' => $lecture, 'submission' => $submissionExists, 'tugas' => $tugas]) }}"
-                                class="px-4 py-2 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                                Submit Ulang Tugas
-                            </a>
+                            @if ($tugas->deadline && now()->lessThan($tugas->deadline))
+                                {{-- Gunakan Flexbox untuk mensejajarkan tombol dan beri jarak --}}
+                                <div class="flex items-center gap-3 mt-3">
+
+                                    {{-- Tombol 1: Batalkan Pengumpulan (Form) --}}
+                                    <form
+                                        action="{{ route('submission.destroy', ['lecture' => $lecture, 'tugas' => $tugas, 'submission' => $submissionExists]) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pengumpulan tugas ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            Batalkan Pengumpulan
+                                        </button>
+                                    </form>
+
+                                    {{-- Tombol 2: Submit Ulang (Link) - Gayanya disamakan --}}
+                                    <a href="{{ route('tugas.editSubmit', ['lecture' => $lecture, 'submission' => $submissionExists, 'tugas' => $tugas]) }}"
+                                        class="inline-block px-4 py-2 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                        Submit Ulang Tugas
+                                    </a>
+                                </div>
+                            @else
+                                <p class="text-sm font-semibold text-gray-600 mt-3">Tindakan tidak diizinkan (tugas sudah
+                                    dinilai atau melewati deadline).</p>
+                            @endif
+
                         </div>
                     </div>
                 @else
@@ -374,4 +399,7 @@
             @endif
         </div>
     </div>
+    @push('scripts')
+        @vite('resources/js/confirmTugasDelete.js')
+    @endpush
 @endsection

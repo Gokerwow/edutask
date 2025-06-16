@@ -69,19 +69,23 @@ class ClassContent extends Component
                 $searchWork = materi::where('lecture_id', $this->lecture->id)
                     ->where(function ($query) {
                         $query->where('title', 'LIKE', '%' . $this->queries . '%');
-                    })->get();
+                    })->orderBy('created_at', 'desc')
+                    ->get();
             } else {
                 $searchWork = Assignment::where('lecture_id', $this->lecture->id)
                     ->where(function ($query) {
                         $query->where('title', 'LIKE', '%' . $this->queries . '%');
-                    })->get();
+                    })->orderBy('created_at', 'desc')
+                    ->get();
             };
         } else {
             if ($this->activeTab == 'materiTab') {
                 $searchWork = materi::where('lecture_id', $this->lecture->id)
+                    ->orderBy('created_at', 'desc')
                     ->get();
             } else {
                 $searchWork = Assignment::where('lecture_id', $this->lecture->id)
+                    ->orderBy('created_at', 'desc')
                     ->get();
             };
         }

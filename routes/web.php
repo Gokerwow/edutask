@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
                 ->name('tugas.edit');
             Route::put('{tugas} ', [TugasController::class, 'updateTugas'])
                 ->name('tugas.update');
+            Route::delete('{tugas}', [TugasController::class, 'destroyTugas'])
+                ->name('tugas.delete');
 
             Route::prefix('{tugas}')->group(function () {
                 Route::get('/submit', [SubmissionController::class, 'createSubmission'])
@@ -83,8 +85,10 @@ Route::middleware('auth')->group(function () {
                     ->name('tugas.updateSubmit');
                 Route::get('/{submit}/download', [SubmissionController::class, 'downloadSubmit'])
                     ->name('tugas.downloadSubmit');
-                Route::put('{submission}/beriNilai', [TugasController::class, 'beriNilai'])
+                Route::put('{submission}/beriNilai', [SubmissionController::class, 'beriNilai'])
                     ->name('tugas.beriNilai');
+                Route::delete('/submission/{submission}', [SubmissionController::class, 'destroy'])
+                    ->name('submission.destroy');
             });
 
             Route::prefix('notice')->name('notice.')->group(function () {
