@@ -35,9 +35,9 @@
                 <div class="w-full md:w-1/4 mb-8 md:mb-0">
                     <h3 class="text-xl font-semibold mb-4 text-orange-200">Link Cepat</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-purple-100 hover:text-orange-300 transition">Home</a></li>
-                        <li><a href="#" class="text-purple-100 hover:text-orange-300 transition">About</a></li>
-                        <li><a href="#" class="text-purple-100 hover:text-orange-300 transition">Classes</a></li>
+                        <li><a href="{{ route('homepage') }}" class="text-purple-100 hover:text-orange-300 transition">Home</a></li>
+                        <li><a href="{{ route('feedback.index') }}" class="text-purple-100 hover:text-orange-300 transition">Feedback</a></li>
+                        <li><a href="{{ route('lecture.index') }}" class="text-purple-100 hover:text-orange-300 transition">Classes</a></li>
                     </ul>
                 </div>
             </div>

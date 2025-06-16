@@ -11,7 +11,7 @@
         </li>
         <li
             class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
-            <a href=""><span class="relative z-10 text-lg">About</span></a>
+            <a href="{{ route('feedback.index') }}"><span class="relative z-10 text-lg">Feedback</span></a>
         </li>
         <li
             class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
@@ -80,14 +80,16 @@
 
                     <div class="p-4 space-y-4">
                         <div>
-                            <button class="flex items-center space-x-2 text-sm text-blue-600 hover:underline">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.94 7.28a8 8 0 1011.31 11.31l4.36 4.36a1 1 0 001.41-1.41l-4.36-4.36a8 8 0 00-11.31-11.31zM10 18a8 8 0 110-16 8 8 0 010 16z" />
-                                </svg>
-                                <span>Give Feedback</span>
-                            </button>
-                            <p class="text-xs text-gray-500 ml-6">Bantu Kami Menyempurnakan EduTask</p>
+                            <a href="{{ route('feedback.form') }}">
+                                <button class="flex items-center space-x-2 text-sm text-blue-600 hover:underline">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M2.94 7.28a8 8 0 1011.31 11.31l4.36 4.36a1 1 0 001.41-1.41l-4.36-4.36a8 8 0 00-11.31-11.31zM10 18a8 8 0 110-16 8 8 0 010 16z" />
+                                    </svg>
+                                    <span>Give Feedback</span>
+                                </button>
+                                <p class="text-xs text-gray-500 ml-6">Bantu Kami Menyempurnakan EduTask</p>
+                            </a>
                         </div>
 
                         <ul class="space-y-2 text-sm">
