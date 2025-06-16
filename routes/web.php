@@ -18,33 +18,32 @@ Route::view('/', 'homepage')
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');
 
-Route::middleware('auth')->group(function() {
-    Route::get('profile', [profileController::class, 'showProfile']) ->
-    name('profile');
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [profileController::class, 'showProfile'])->name('profile');
     Route::post('profile/update', [profileController::class, 'update'])
-    ->name('profile.update');
+        ->name('profile.update');
 
-    Route::prefix('feedback')->group(function() {
+    Route::prefix('feedback')->group(function () {
         Route::get('/', [FeedbackController::class, 'index'])->name('feedback.index');
         Route::get('/create', [FeedbackController::class, 'showForm'])->name('feedback.form');
         Route::post('/create', [FeedbackController::class, 'store'])->name('feedback.store');
     });
 
-    Route::prefix('lecture')->group(function() {
+    Route::prefix('lecture')->group(function () {
         Route::get('/', [LectureController::class, 'indexLecture'])
-        ->name('lecture.index');
+            ->name('lecture.index');
         Route::get('/create', [LectureController::class, 'createLecture'])
-        ->name('lecture.create');
+            ->name('lecture.create');
         Route::post('/create', [LectureController::class, 'storeLecture'])
-        ->name('lecture.store');
+            ->name('lecture.store');
         Route::get('/{lecture}', [LectureController::class, 'showLecture'])
-        ->name('lecture.show');
+            ->name('lecture.show');
         Route::delete('/{lecture}', [LectureController::class, 'exitLecture'])
-        ->name('lecture.out');
+            ->name('lecture.out');
         Route::post('/join', [LectureController::class, 'joinLecture'])
-        ->name('lecture.join');
+            ->name('lecture.join');
 
-        Route::prefix('{lecture}/materi')->group(function() {
+        Route::prefix('{lecture}/materi')->group(function () {
             Route::get('/create', [MateriController::class, 'createMateri'])
                 ->name('materi.create');
             Route::post('/create', [MateriController::class, 'storeMateri'])
@@ -58,10 +57,10 @@ Route::middleware('auth')->group(function() {
             Route::delete('/{materi}', [MateriController::class, 'destroyMateri'])
                 ->name('materi.delete');
             Route::get('/{materi}/download', [MateriController::class, 'downloadMateri'])
-            ->name('materi.download');
+                ->name('materi.download');
         });
 
-        Route::prefix('{lecture}/tugas')->group(function() {
+        Route::prefix('{lecture}/tugas')->group(function () {
             Route::get('/create', [TugasController::class, 'createTugas'])
                 ->name('tugas.create');
             Route::post('/create', [TugasController::class, 'storeTugas'])
@@ -73,7 +72,7 @@ Route::middleware('auth')->group(function() {
             Route::put('{tugas} ', [TugasController::class, 'updateTugas'])
                 ->name('tugas.update');
 
-            Route::prefix('{tugas}')->group(function() {
+            Route::prefix('{tugas}')->group(function () {
                 Route::get('/submit', [SubmissionController::class, 'createSubmission'])
                     ->name('tugas.submit');
                 Route::post('/submit', [SubmissionController::class, 'storeSubmission'])
@@ -88,6 +87,16 @@ Route::middleware('auth')->group(function() {
                     ->name('tugas.beriNilai');
             });
 
+            Route::prefix('notice')->name('notice.')->group(function () {
+                Route::get('/{notice}', [App\Http\Controllers\NoticeController::class, 'show'])
+                    ->name('show');
+                Route::get('/{notice}/edit', [App\Http\Controllers\NoticeController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{notice}', [App\Http\Controllers\NoticeController::class, 'update'])
+                    ->name('update');
+                Route::post('/{notice}/comments', [App\Http\Controllers\NoticeController::class, 'storeComment'])
+                    ->name('comment.store');
+            });
         });
     });
 

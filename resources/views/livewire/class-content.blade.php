@@ -222,9 +222,9 @@
                                         d="M10.34 3.07a1.016 1.016 0 011.32 0l3.31 3.311a1.016 1.016 0 010 1.32C13.97 8.712 12 10.28 12 12.5V12.5a8.25 8.25 0 00-2.933 16.044A8.25 8.25 0 0012 21.75V21.75c0 2.22-.97 3.788-1.97 4.799a1.016 1.016 0 01-1.32 0L5.399 23.238a1.016 1.016 0 010-1.32c1.002-1.001 2.132-2.607 2.132-4.909V17a8.25 8.25 0 005.14-13.93zM10.34 3.07L6.03 7.381M15 9l-2.25 2.25M15 9l2.25 2.25M15 9v10.5M7.5 12h9M7.5 15h9" />
                                 </svg>
                             </div>
-                            <div class="ml-4 flex-1">
+                            <div class="ml-4 flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
-                                    <h3 class="text-lg font-medium text-gray-900">{{ $item->name }}</h3>
+                                    <h3 class="text-lg font-medium text-gray-900 w-1/2 truncate">{{ $item->description }}</h3>
                                     <div>
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 mr-2">
@@ -256,7 +256,7 @@
                                         {{ $item->created_at->format('d M Y') }}
                                     </div>
                                     <div class="mt-3 sm:mt-0">
-                                        <a href="{{-- route('forum.announcement.show', $item->id) --}}"
+                                        <a href="{{ route('notice.show', [$lecture, $item]) }}"
                                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             Baca Selengkapnya
                                         </a>
