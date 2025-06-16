@@ -112,7 +112,6 @@
                                 <a href="#" class="flex items-center justify-between hover:text-purple-500">
                                     <span class="flex items-center gap-2"><i class="fas fa-palette"></i> Display &
                                         Theme</span>
-                                    <i class="fas fa-chevron-right text-xs"></i>
                                 </a>
                             </li>
                             <li>

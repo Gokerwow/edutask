@@ -3,7 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Assignment;
-use App\Models\User;
+use App\Models\KelasUserRoles;
+use App\Models\Submission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -20,23 +21,64 @@ class SubmissionFactory extends Factory
      */
     public function definition(): array
     {
-        Storage::fake('public');
+        Storage::disk('public')->makeDirectory('submission_files');
 
-        $fakeFileName = fake()->words(3, true) . '.pdf'; // Contoh: 'aut-sed-et.pdf'
-        $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf'); // Buat file PDF palsu 1.5MB
+        // Loop untuk menemukan kombinasi user dan assignment yang unik
+        while (true) {
+            $siswaRole = KelasUserRoles::where('role', 'siswa')->inRandomOrder()->first();
 
-        $filePath = $fakeFile->store('submission_files', 'public');
+            if ($siswaRole) {
+                $assignment = Assignment::where('lecture_id', $siswaRole->lecture_id)->inRandomOrder()->first();
 
-        return [
-            'description' => fake()->sentence(),
-            'file_path' => $filePath,
-            'original_fileName' => $fakeFileName,
-            'status' => fake()->randomElement(['submitted', 'graded', 'cancelled']), // Default status
-            'assignment_id' => Assignment::inRandomOrder()->first()->id, // Randomly associate with an existing assignment
-            'user_id' => User::inRandomOrder()->first()->id, // Randomly associate with an existing user
-            'grade' => fake()->numberBetween(0, 100), // Uncomment if you want to include grade
-            'comment' => fake()->sentence(5), // Uncomment if you want to include comment
-            'graded_at' => fake()->dateTimeBetween('-1 month', 'now'), // Optional field for when the submission was graded
-        ];
+                if ($assignment) {
+                    $submissionExists = Submission::where('assignment_id', $assignment->id)
+                        ->where('user_id', $siswaRole->user_id)
+                        ->exists();
+
+                    if (!$submissionExists) {
+                        // ======================================================
+                        // AWAL DARI PERBAIKAN
+                        // ======================================================
+
+                        // 1. Tentukan status terlebih dahulu secara acak.
+                        $status = fake()->randomElement(['submitted', 'graded', 'cancelled']);
+
+                        // 2. Siapkan variabel grade dan data terkait dengan nilai default null.
+                        $grade = null;
+                        $comment = null;
+                        $graded_at = null;
+
+                        // 3. Logika kondisional: Isi nilai HANYA jika statusnya 'graded'.
+                        //    Ini membuat data Anda lebih logis dan konsisten.
+                        if ($status === 'graded') {
+                            $grade = fake()->numberBetween(70, 100);
+                            $comment = fake()->sentence();
+                            $graded_at = fake()->dateTimeThisMonth();
+                        }
+
+                        // Untuk status 'submitted' dan 'cancelled', semua variabel di atas akan tetap null.
+
+                        $fakeFileName = fake()->words(3, true) . '.pdf';
+                        $fakeFile = UploadedFile::fake()->create($fakeFileName, 1500, 'application/pdf');
+                        $filePath = $fakeFile->store('submission_files', 'public');
+
+                        return [
+                            'description' => fake()->sentence(),
+                            'file_path' => $filePath,
+                            'original_fileName' => $fakeFileName,
+                            'status' => $status, // Gunakan status yang sudah kita buat
+                            'assignment_id' => $assignment->id,
+                            'user_id' => $siswaRole->user_id,
+                            'grade' => $grade, // Gunakan grade yang sudah kita tentukan
+                            'comment' => $comment, // Gunakan comment yang sudah kita tentukan
+                            'graded_at' => $graded_at, // Gunakan tanggal yang sudah kita tentukan
+                        ];
+                        // ======================================================
+                        // AKHIR DARI PERBAIKAN
+                        // ======================================================
+                    }
+                }
+            }
+        }
     }
 }

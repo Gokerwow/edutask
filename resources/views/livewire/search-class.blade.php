@@ -204,7 +204,7 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('lecture.show', ['id' => $joinedLecture->lecture->id]) }}">
+                            <a href="{{ route('lecture.show', ['lecture' => $joinedLecture->lecture]) }}">
                                 <button
                                     class="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition duration-200">
                                     Lihat Kelas

@@ -14,7 +14,7 @@ class SubmissionSeeder extends Seeder
     public function run(): void
     {
         Submission::factory()
-            ->count(80)
+            ->count(150)
             ->create();
     }
 }

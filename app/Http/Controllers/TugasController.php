@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Assignment;
 use App\Models\Lecture;
+use App\Models\Submission;
 use App\Models\work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,11 +94,18 @@ class TugasController extends Controller
             ->where('user_id', Auth::id())
             ->first();
 
+        $submissions = $tugas->submissions()
+            ->where('assignment_id', $tugas->id)
+            ->get();
+
+
+
         return view('work.tugas-show', [
             'lecture' => $lecture,
             'tugas' => $tugas,
             'isTentorInThisClass' => $isTentorInThisClass,
             'submissionExists' => $submissionExists,
+            'submissions' => $submissions
         ]);
     }
 
@@ -197,5 +205,38 @@ class TugasController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function beriNilai(Request $request, Lecture $lecture, Assignment $tugas, Submission $submission)
+    {
+        $validator = Validator::make($request->all(), [
+            'submission-grade' => 'required|string|max:100',
+            'submission-comment' => 'nullable|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            $errorList = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorList .= '<li>' . e($error) . '</li>';
+            }
+            $errorList .= '</ul>';
+
+            Alert::error('Oops! Terjadi Kesalahan', $errorList)->toHtml();
+            return redirect()->back()->withInput();
+        };
+
+        $validated_data = $validator->validated();
+
+        $submission->update([
+        'grade' => $validated_data['submission-grade'],
+        'lecturer_comment' => $validated_data['submission-comment'],
+        'graded_at' => now(),
+        ]);
+
+        Alert::success('Berhasil', 'Nilai telah berhasil disimpan.');
+
+        return redirect()->back();
+
     }
 }

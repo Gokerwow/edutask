@@ -37,8 +37,10 @@ Route::middleware('auth')->group(function() {
         ->name('lecture.create');
         Route::post('/create', [LectureController::class, 'storeLecture'])
         ->name('lecture.store');
-        Route::get('/{id}', [LectureController::class, 'showLecture'])
+        Route::get('/{lecture}', [LectureController::class, 'showLecture'])
         ->name('lecture.show');
+        Route::delete('/{lecture}', [LectureController::class, 'exitLecture'])
+        ->name('lecture.out');
         Route::post('/join', [LectureController::class, 'joinLecture'])
         ->name('lecture.join');
 
@@ -53,6 +55,8 @@ Route::middleware('auth')->group(function() {
                 ->name('materi.update');
             Route::get('/{materi}', [MateriController::class, 'showMateri'])
                 ->name('materi.show');
+            Route::delete('/{materi}', [MateriController::class, 'destroyMateri'])
+                ->name('materi.delete');
             Route::get('/{materi}/download', [MateriController::class, 'downloadMateri'])
             ->name('materi.download');
         });
@@ -80,6 +84,8 @@ Route::middleware('auth')->group(function() {
                     ->name('tugas.updateSubmit');
                 Route::get('/{submit}/download', [SubmissionController::class, 'downloadSubmit'])
                     ->name('tugas.downloadSubmit');
+                Route::put('{submission}/beriNilai', [TugasController::class, 'beriNilai'])
+                    ->name('tugas.beriNilai');
             });
 
         });
