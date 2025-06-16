@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-3xl mx-auto mt-6 px-4">
+<div class="max-w-3xl mx-auto mt-6 px-4 flex flex-wrap">
     <h2 class="text-2xl font-bold mb-4 text-center">Feedback dari Pengguna</h2>
 
     @forelse ($feedbacks as $feedback)
@@ -41,6 +41,9 @@
     @empty
         <p class="text-gray-600 text-center">Belum ada feedback yang dikirim.</p>
     @endforelse
+    <div>
+        {{ $feedbacks->links() }}
+    </div>
 </div>
 
 @endsection
