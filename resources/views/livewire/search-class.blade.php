@@ -131,9 +131,13 @@
                     <!-- Class Card 1 -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
                         <div class="relative h-40 overflow-hidden">
-                            <div class="w-full h-full object-cover course-image ">
-                                <img class="hover:scale-110 transition duration-500"
-                                    src="{{ $joinedLecture->lecture->banner }}" alt="">
+                            <div
+                                class="w-full h-full object-cover course-image bg-[linear-gradient(135deg,#f97316_0%,#7e22ce_100%)] ">
+                                @if ($joinedLecture->lecture->banner)
+                                    <img class="hover:scale-110 transition duration-500"
+                                        src="{{ $joinedLecture->lecture->banner }}" alt="">
+                                @endif
+
                             </div>
                             {{-- <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                             alt="Mathematics"
@@ -163,7 +167,8 @@
                                                     <stop offset="100%" stop-color="#7e22ce" />
                                                 </linearGradient>
                                             </defs>
-                                            <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                            <circle cx="50" cy="50" r="45"
+                                                fill="url(#circleGradient)" />
                                             <circle cx="50" cy="40" r="15" fill="#ffffff" />
                                             <circle cx="50" cy="85" r="25" fill="#ffffff" />
                                         </svg>

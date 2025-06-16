@@ -2,9 +2,11 @@
     <!-- Banner Kuliah -->
     <div class="relative max-w-full h-[500px] mb-8 rounded-xl overflow-hidden shadow-lg">
         <div
-            class="absolute z-0 w-full h-full course-image overflow-hidden flex justify-center items-center bg-gradient-to-r from-blue-600 to-purple-600">
-            <img class="hover:scale-110 transition duration-500 w-full h-full object-cover"
-                src="{{ asset($lecture->banner) }}" alt="Banner {{ $lecture->name ?? 'Kuliah' }}">
+            class="absolute z-0 w-full h-full course-image overflow-hidden flex justify-center items-center bg-[linear-gradient(135deg,#f97316_0%,#7e22ce_100%)]">
+            @if ($lecture->banner)
+                <img class="hover:scale-110 transition duration-500 w-full h-full object-cover"
+                    src="{{ $lecture->banner }}" alt="Banner {{ $lecture->name ?? 'Kuliah' }}">
+            @endif
         </div>
         <div
             class="relative z-10 w-full h-full flex flex-col justify-end p-8 text-white bg-gradient-to-t from-black/80 to-transparent">
@@ -35,7 +37,7 @@
                 <div class="p-6 border-b">
                     <div class="flex items-center space-x-4">
                         @if ($lecture->tentor->avatar)
-                            <img class="w-12 h-12 rounded-full object-cover" src="{{ asset($lecture->tentor->avatar) }}"
+                            <img class="w-12 h-12 rounded-full object-cover" src="{{ $lecture->tentor->avatar }}"
                                 alt="{{ $lecture->tentor->name }}">
                         @else
                             <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
@@ -102,12 +104,11 @@
                             </a>
                         </li>
                         <li>
-                            <form action="{{ route('lecture.out', $lecture) }}" method="POST"  onsubmit="return confirm('Apakah Anda yakin ingin keluar dari kelas ini?');">
+                            <form class="delete-form" action="{{ route('lecture.out', $lecture) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button
-                                    type="submit"
-                                    class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 transition">
+                                <button type="submit"
+                                    class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
