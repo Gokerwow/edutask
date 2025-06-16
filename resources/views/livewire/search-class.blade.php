@@ -235,7 +235,7 @@
                                 stroke-linejoin="round"></path>
                         </g>
                     </svg>
-                    <button class="">
+                    <button class="" x-data x-on:click="$dispatch('open-modal', 'joinClassModal')">
                         Join New Class
                     </button>
                 </div>

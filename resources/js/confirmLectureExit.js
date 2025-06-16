@@ -8,7 +8,7 @@ deleteForms.forEach((form) => {
 
         Swal.fire({
             title: "Apakah Anda yakin?",
-            text: "Anda tidak akan dapat melihat infomrasi tentang kelas ini lagi!",
+            text: "Anda tidak akan dapat melihat informasi tentang kelas ini lagi!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
