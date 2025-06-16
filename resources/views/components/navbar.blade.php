@@ -5,18 +5,24 @@
         </div>
     </a>
     <ul class="flex h-full gap-2">
-        <li
-            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
-            <a href="{{ route('homepage') }}"><span class="relative z-10 text-lg">Home</span></a>
-        </li>
-        <li
-            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
-            <a href="{{ route('feedback.index') }}"><span class="relative z-10 text-lg">Feedback</span></a>
-        </li>
-        <li
-            class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
-            <a href="{{ route('lecture.index') }}"><span class="relative z-10 text-lg">Classes</span></a>
-        </li>
+        <a href="{{ route('homepage') }}">
+            <li
+                class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+                <span class="relative z-10 text-lg">Home</span>
+            </li>
+        </a>
+        <a href="{{ route('feedback.index') }}">
+            <li
+                class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+                <span class="relative z-10 text-lg">Feedback</span>
+            </li>
+        </a>
+        <a href="{{ route('lecture.index') }}">
+            <li
+                class="nav-item flex items-center relative px-6 py-5 h-full cursor-pointer hover:text-white transition-colors duration-500">
+                <span class="relative z-10 text-lg">Classes</span>
+            </li>
+        </a>
     </ul>
     <div class="flex space-x-4">
         @auth

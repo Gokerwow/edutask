@@ -1,20 +1,21 @@
-
 <div class="w-full">
     <!-- Dashboard Ringkasan -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500">
             <h3 class="text-gray-500 text-sm font-medium mb-1">Materi Terbaru</h3>
             <p class="text-xl font-semibold mb-2">{{ $materiTerbaru->title ?? 'Tidak Ada Materi Terbaru' }}</p>
-            @if($materiTerbaru !== null)
+            @if ($materiTerbaru !== null)
                 <p class="text-sm text-gray-500">Diupload {{ $materiTerbaru?->created_at->diffForHumans() }}</p>
             @endif
         </div>
         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-orange-500">
             <h3 class="text-gray-500 text-sm font-medium mb-1">Tugas Terbaru</h3>
-            @if ($tugasTerbaru && $tugasTerbaru->count() > 0) {{-- atau !$tugasTerbaru->isEmpty() --}}
+            @if ($tugasTerbaru && $tugasTerbaru->count() > 0)
+                {{-- atau !$tugasTerbaru->isEmpty() --}}
                 {{-- Sekarang aman untuk memanggil $tugasTerbaru->first() --}}
                 <p class="text-xl font-semibold mb-2">{{ $tugasTerbaru->title }}</p>
-                <p class="text-sm text-gray-500">Deadline {{ $tugasTerbaru->sisa_waktu ?? 'Tidak Ada Materi Terbaru' }}</p>
+                <p class="text-sm text-gray-500">Deadline {{ $tugasTerbaru->sisa_waktu ?? 'Tidak Ada Materi Terbaru' }}
+                </p>
             @else
                 <p class="text-xl font-semibold mb-2">Tidak Ada Tugas Terbaru</p>
             @endif
@@ -70,10 +71,19 @@
                 </div>
 
                 <div class="flex items-center space-x-4 w-full md:w-auto">
-                    @if($isTentorInThisClass)
-                        <div class="flex items-center px-4 py-2 {{ $activeTab === 'materiTab' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-orange-600 hover:bg-orange-700' }} text-white rounded-lg ">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                            <a href="{{ $activeTab === 'materiTab' ? route('materi.create', ['lecture' => $lecture->id]) : route('tugas.create', ['lecture' => $lecture->id]) }}" class="">
+                    @if ($isTentorInThisClass)
+                        <div
+                            class="flex items-center px-4 py-2 {{ $activeTab === 'materiTab' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-orange-600 hover:bg-orange-700' }} text-white rounded-lg ">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M6 12H18M12 6V18" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            <a href="{{ $activeTab === 'materiTab' ? route('materi.create', ['lecture' => $lecture->id]) : route('tugas.create', ['lecture' => $lecture->id]) }}"
+                                class="">
                                 {{ $activeTab === 'materiTab' ? 'Buat Materi Baru' : 'Buat Tugas baru' }}
                             </a>
                         </div>
@@ -120,7 +130,8 @@
                             </div>
                             <div class="ml-4 flex-1">
                                 <div class="flex items-center justify-between">
-                                    <a href="{{ route('materi.show', ['lecture' => $lecture, 'materi' => $task]) }}" class="text-lg cursor-pointer font-medium text-gray-900">{{ $task->title }}</a>
+                                    <a href="{{ route('materi.show', ['lecture' => $lecture, 'materi' => $task]) }}"
+                                        class="text-lg cursor-pointer font-medium text-gray-900">{{ $task->title }}</a>
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                         Baru
@@ -169,7 +180,8 @@
                             </div>
                             <div class="ml-4 flex-1">
                                 <div class="flex items-center justify-between">
-                                    <a href="{{ route('tugas.show', ['lecture' => $lecture, 'tugas' => $task, 'isTentorInThisClass' => $isTentorInThisClass]) }}" class="text-lg font-medium text-gray-900">{{ $task->title }}</a>
+                                    <a href="{{ route('tugas.show', ['lecture' => $lecture, 'tugas' => $task, 'isTentorInThisClass' => $isTentorInThisClass]) }}"
+                                        class="text-lg font-medium text-gray-900">{{ $task->title }}</a>
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                         Baru
@@ -210,6 +222,25 @@
             </div>
         @elseif($activeTab === 'forumTab')
             <div class="divide-y divide-gray-200">
+                <div class="flex-1 p-6">
+                    <form wire:submit="storeNotice">
+                        {{-- HANYA ADA TEXTAREA, INPUT JUDUL DIHAPUS --}}
+                        <textarea wire:model="newNoticeDescription" placeholder="Mulai forum baru..."
+                            class="w-full px-3 py-2 border rounded-md focus:outline-indigo-500 @error('newNoticeDescription') border-red-500 @enderror"
+                            rows="3"></textarea>
+                        @error('newNoticeDescription')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+
+                        {{-- Tombol Submit --}}
+                        <div class="text-right mt-3">
+                            <button type="submit"
+                                class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
+                                Publikasikan
+                            </button>
+                        </div>
+                    </form>
+                </div>
                 {{-- Asumsi variabel $pengumuman berisi collection/array pengumuman --}}
                 @forelse ($pengumuman as $item)
                     <div class="p-6 hover:bg-gray-50 transition">
@@ -224,7 +255,8 @@
                             </div>
                             <div class="ml-4 flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
-                                    <h3 class="text-lg font-medium text-gray-900 w-1/2 truncate">{{ $item->description }}</h3>
+                                    <h3 class="text-lg font-medium text-gray-900 w-1/2 truncate">
+                                        {{ $item->description }}</h3>
                                     <div>
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 mr-2">
