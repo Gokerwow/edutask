@@ -5,7 +5,7 @@ generateCodeBtn.addEventListener('click', generateCode)
 
 async function generateCode() {
     const firstStr = 'EDU';
-    const randomize = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const randomize = Math.random().toString(36).substring(2, 5).toUpperCase();
 
     let code = firstStr + randomize;
 
