@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="max-w-3xl mx-auto mt-6 px-4 flex flex-wrap">
-        <h2 class="text-2xl font-bold mb-4 text-center">Feedback dari Pengguna</h2>
+        <h2 class="font-bold mb-4 w-full text-center text-3xl">Feedback dari Pengguna</h2>
 
         @forelse ($feedbacks as $feedback)
             <div class="w-full bg-white shadow-md rounded-lg p-4 mb-4 border min-h-[140px] flex flex-col justify-between">

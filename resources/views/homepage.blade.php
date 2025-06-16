@@ -172,35 +172,4 @@
             </div>
         </div>
     </section>
-
-    <section class="w-full relative bg-[linear-gradient(85deg,#f87216_0%,#8e2db4_100%)] py-20 mt-10 ">
-        <div class="w-full testimonial">
-            <div class="w-full px-40">
-                <div class="w-full flex flex-col items-center text-white ">
-                    <h1 class="text-center text-3xl">Apa kata Yang Lain?</h1>
-                    <p class="text-center text-lg w-96 text-gray-100">Lebih dari Sekadar Kata-kata: Ini Pengalaman Berharga Mereka dengan Edutask.</p>
-                </div>
-                <div class="w-full relative mt-10">
-                    <div class="w-full flex relative p-5 overflow-x-scroll custom-scroll overflow-y-hidden gap-10" style="scrollbar-width: 0">
-                        @for($i = 0; $i < 5; $i++)
-                        <div class="w-[500px] h-[300px] flex flex-col flex-shrink-0 bg-white rounded-2xl p-8">
-                            <div class="flex items-center gap-5">
-                                <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 hover:scale-105 transition-transform bg-white">
-                                    <img class="w-full h-full object-cover" src="{{ asset('images/avatars/yuna.jpg') }}" alt="Yuna's avatar">
-                                </div>
-                                <div class="">
-                                    <h1 class="text-xl">Brili Pacar yuna</h1>
-                                    <h1 class="text-gray-700">brilipacaryuna@gmail.com</h1>
-                                </div>
-                            </div>
-                            <div class="mt-5 w-full flex-1 overflow-y-scroll comment-scroll">
-                                <p class="text-xl">Wahhhh keren bangettt webnya, memudahkan pengerjaan tugasku dan melihat materinyaaaaaaa!!! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt optio quidem doloremque voluptatem, modi quibusdam sit nulla eius. Laborum illum ratione eaque amet earum unde rem reprehenderit provident. Molestiae, ducimus!</p>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection
