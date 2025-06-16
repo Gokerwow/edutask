@@ -21,28 +21,24 @@
     <div class="flex space-x-4">
         @auth
             <div x-data="{ open: false }" class="relative inline-block text-left">
-                <button @click="open = !open"
-                    class="flex items-center space-x-2 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300">
-                    @if (auth()->user()->avatar)
-                        <div class="w-12 h-12 rounded-full overflow-hidden">
-                            <img src="{{ auth()->user()->avatar }}" alt="Avatar"
-                                class="w-full h-full object-cover object-center" referrerPolicy="no-referrer">
-                        </div>
-                    @else
-                        <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
-                                    y2="100%">
-                                    <stop offset="0%" stop-color="#f97316" />
-                                    <stop offset="100%" stop-color="#7e22ce" />
-                                </linearGradient>
-                            </defs>
-                            <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
-                            <circle cx="50" cy="40" r="15" fill="#ffffff" />
-                            <circle cx="50" cy="85" r="25" fill="#ffffff" />
-                        </svg>
-                    @endif
+                <button @click="open = !open" class="flex items-center space-x-2 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        @if(auth()->user()->avatar )
+                            <img src="{{ auth()->user()->avatar}}" alt="Avatar" class="w-full h-full object-cover object-center" referrerpolicy="no-referrer">
+                        @else
+                            <svg class="w-full h-full object-cover" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f97316" />
+                                        <stop offset="100%" stop-color="#7e22ce" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                <circle cx="50" cy="40" r="15" fill="#ffffff" />
+                                <circle cx="50" cy="85" r="25" fill="#ffffff" />
+                            </svg>
+                        @endif
+                    </div>
 
                     <span>{{ auth()->user()->name }}</span>
                 </button>
@@ -53,14 +49,11 @@
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 rounded-full overflow-hidden">
                                 @if(auth()->user()->avatar)
-                                    <img src="{{ auth()->user()->avatar }}" alt="Avatar"
-                                        class="w-full h-full object-cover object-center">
+                                    <img src="{{ auth()->user()->avatar }}" alt="Avatar" class="w-full h-full object-cover object-center" referrerpolicy="no-referrer">
                                 @else
-                                    <svg class="w-12 h-12 rounded-full overflow-hidden" viewBox="0 0 100 100"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-full h-full object-cover" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                         <defs>
-                                            <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%"
-                                                y2="100%">
+                                            <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%" y2="100%">
                                                 <stop offset="0%" stop-color="#f97316" />
                                                 <stop offset="100%" stop-color="#7e22ce" />
                                             </linearGradient>
@@ -94,24 +87,9 @@
 
                         <ul class="space-y-2 text-sm">
                             <li>
-                                <a href="{{ route('profile') }}"
-                                    class="flex items-center justify-between hover:text-purple-500">
-                                    <span class="flex items-center gap-2"><i class="fas fa-cog"></i> Settings &
-                                        Privacy</span>
+                                <a href="{{ route('profile') }}" class="flex items-center justify-between hover:text-purple-500">
+                                    <span class="flex items-center gap-2"><i class="fas fa-cog"></i>Profil</span>
                                     <i class="fas fa-chevron-right text-xs"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="flex items-center justify-between hover:text-purple-500">
-                                    <span class="flex items-center gap-2"><i class="fas fa-question-circle"></i> Help &
-                                        Support</span>
-                                    <i class="fas fa-chevron-right text-xs"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="flex items-center justify-between hover:text-purple-500">
-                                    <span class="flex items-center gap-2"><i class="fas fa-palette"></i> Display &
-                                        Theme</span>
                                 </a>
                             </li>
                             <li>

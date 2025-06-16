@@ -1,24 +1,23 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex justify-center">
+    <div class="w-full max-w-screen-6xl px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Sidebar -->
-            <x-sidebar :user="$user" class="lg:w-1/4" />
 
             <!-- Main Content -->
-            <div class="lg:w-3/4 space-y-8">
+            <div class="w-full max-w-4xl mx-auto space-y-8">
                 <!-- Profile Header -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md">
+                <div class="bg-gradient-to-r from-purple-600 to-orange-500 opacity-90 rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md">
                     <div class="gradient-bg h-32 sm:h-40 relative">
                         <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-orange-500 opacity-90"></div>
                     </div>
                     <div class="px-6 pb-6">
                         <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 sm:-mt-20">
-                            <div class="relative group">
+                            <div class="relative group z-0">
                                 <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg overflow-hidden transition-transform duration-300 group-hover:scale-105">
                                     @if ($user->avatar)
-                                        <img class="w-full h-full object-cover" src="{{ $user->avatar }}" alt="Profile">
+                                        <img class="w-full h-full object-cover" src="{{ $user->avatar ? asset($user->avatar) : asset('images/default-avatar.png') }}" alt="Profile">
                                     @else
                                         <svg class="w-full h-full object-cover" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                             <defs>
@@ -35,15 +34,15 @@
                                 </div>
                                 <div class="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
                             </div>
-                            <div class="mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left flex-1">
-                                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $user->name }}</h1>
-                                <p class="text-gray-600 text-lg">{{ $user->email }}</p>
-                                <p class="text-sm text-gray-500 mt-1">Member since {{ date('d M Y', strtotime($user->created_at)) }}</p>
+                            <div class="mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left flex-1 relative z-10">
+                                <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $user->name }}</h1>
+                                <p class="text-white text-lg">{{ $user->email }}</p>
+                                <p class="text-sm text-white mt-1">Member sejak {{ date('d M Y', strtotime($user->created_at)) }}</p>
                             </div>
                             <div class="mt-4 sm:mt-0 flex gap-2">
                                 <button onclick="document.getElementById('editProfileModal').classList.remove('hidden')"
-                                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center shadow-sm hover:shadow-md">
-                                    <i class="fas fa-edit mr-2"></i>Edit Profile
+                                    class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center shadow-sm hover:shadow-md">
+                                    <i class="fas fa-edit mr-2"></i>Edit Profil
                                 </button>
                             </div>
                         </div>
@@ -58,7 +57,7 @@
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 transition-all duration-300 hover:shadow-md">
                             <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                                 <i class="fas fa-address-card text-indigo-500 mr-2"></i>
-                                Contact Information
+                                Informasi Akun
                             </h2>
                             <div class="space-y-4">
                                 <div class="flex items-start">
@@ -66,7 +65,7 @@
                                         <i class="fas fa-user text-indigo-600 w-5"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm text-gray-500">Name</p>
+                                        <p class="text-sm text-gray-500">Nama</p>
                                         <p class="text-gray-700 font-medium">{{ $user->name }}</p>
                                     </div>
                                 </div>
@@ -84,7 +83,7 @@
                                         <i class="fas fa-calendar-day text-indigo-600 w-5"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm text-gray-500">Member Since</p>
+                                        <p class="text-sm text-gray-500">Member Sejak</p>
                                         <p class="text-gray-700 font-medium">{{ date('d M Y', strtotime($user->created_at)) }}</p>
                                     </div>
                                 </div>
@@ -96,24 +95,28 @@
                             <div class="border-b border-gray-100 px-6 py-4 bg-gray-50">
                                 <h3 class="font-semibold text-gray-900 flex items-center">
                                     <i class="fas fa-chalkboard-teacher text-indigo-500 mr-2"></i>
-                                    Your Classes
+                                    Kelas Anda
                                 </h3>
                             </div>
                             <div class="p-6">
                                 <div class="mb-6">
                                     <h4 class="font-medium text-gray-700 mb-3 flex items-center">
                                         <i class="fas fa-user-graduate text-blue-500 mr-2 text-sm"></i>
-                                        Classes You're Taking
+                                        Kelas yang Anda Ikuti
                                     </h4>
                                     <ul class="space-y-2">
                                         @forelse($kelasDiikuti as $kelas)
-                                            <li class="flex items-center py-2 px-3 bg-blue-50 rounded-lg">
-                                                <i class="fas fa-bookmark text-blue-400 mr-2 text-sm"></i>
-                                                <span>{{ $kelas->name ?? 'Unnamed Class' }}</span>
-                                            </li>
+                                            <a href="{{ route('lecture.show', $kelas->id) }}"
+                                                class="block py-2 px-3 bg-blue-50 hover:bg-blue-100 rounded-lg text-blue-700 no-underline transition">
+                                                <li class="flex items-center">
+                                                    <i class="fas fa-bookmark text-blue-400 mr-2 text-sm"></i>
+                                                    <span>{{ $kelas->name ?? 'Unnamed Class' }}</span>
+                                                </li>
+                                            </a>
+
                                         @empty
                                             <li class="text-gray-500 text-sm py-2 px-3 bg-gray-50 rounded-lg">
-                                                No classes enrolled
+                                                Tidak ada kelas yang diikuti
                                             </li>
                                         @endforelse
                                     </ul>
@@ -122,17 +125,21 @@
                                 <div>
                                     <h4 class="font-medium text-gray-700 mb-3 flex items-center">
                                         <i class="fas fa-chalkboard text-purple-500 mr-2 text-sm"></i>
-                                        Classes You're Teaching
+                                        Kelas yang Anda Bimbing
                                     </h4>
                                     <ul class="space-y-2">
                                         @forelse($kelasDibimbing as $kelas)
-                                            <li class="flex items-center py-2 px-3 bg-purple-50 rounded-lg">
-                                                <i class="fas fa-bookmark text-purple-400 mr-2 text-sm"></i>
-                                                <span>{{ $kelas->name ?? 'Unnamed Class' }}</span>
-                                            </li>
+                                            <a href="{{ route('lecture.show', $kelas->id) }}"
+                                                class="block py-2 px-3 bg-purple-50 hover:bg-purple-100 rounded-lg text-purple-700 no-underline transition">
+                                                <li class="flex items-center">
+                                                    <i class="fas fa-bookmark text-purple-400 mr-2 text-sm"></i>
+                                                    <span>{{ $kelas->name ?? 'Unnamed Class' }}</span>
+                                                </li>
+                                            </a>
+
                                         @empty
                                             <li class="text-gray-500 text-sm py-2 px-3 bg-gray-50 rounded-lg">
-                                                No teaching classes
+                                                Tidak ada kelas yang dibimbing
                                             </li>
                                         @endforelse
                                     </ul>
@@ -148,20 +155,23 @@
                             <div class="border-b border-gray-100 px-6 py-4 bg-gray-50">
                                 <h3 class="font-semibold text-gray-900 flex items-center">
                                     <i class="fas fa-tasks text-indigo-500 mr-2"></i>
-                                    Your Assignments
+                                    Tugas Anda
                                 </h3>
                             </div>
                             <div class="p-6">
                                 <div class="mb-8">
                                     <h4 class="font-medium text-gray-700 mb-4 flex items-center border-b pb-2">
                                         <i class="fas fa-user-graduate text-blue-500 mr-2"></i>
-                                        Assignments from Your Classes
+                                        Tugas dari Kelas yang Anda Ikuti
                                     </h4>
                                     <div class="space-y-4">
                                         @forelse($tugasSiswa as $assignment)
-                                            <div class="border-l-4 border-blue-400 pl-4 py-2 hover:bg-blue-50 rounded-r-lg transition-colors duration-200">
+                                            <a href="{{ route('tugas.show', [$assignment->lecture->id, $assignment->id]) }}"
+                                                class="block border-l-4 border-blue-400 pl-4 py-2 hover:bg-blue-50 rounded-r-lg transition-colors duration-200 text-inherit no-underline">
                                                 <div class="flex justify-between items-start">
-                                                    <h5 class="font-medium text-gray-900">{{ $assignment->title }}</h5>
+                                                    <h5 class="font-medium text-blue-700">
+                                                        {{ $assignment->title }}
+                                                    </h5>
                                                     <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
                                                         Due: {{ $assignment->deadline->format('d M Y H:i') }}
                                                     </span>
@@ -170,11 +180,12 @@
                                                     <i class="fas fa-chalkboard text-gray-400 mr-1"></i>
                                                     {{ $assignment->lecture->name ?? 'N/A' }}
                                                 </p>
-                                            </div>
+                                            </a>
+
                                         @empty
                                             <div class="text-center py-4 text-gray-500">
                                                 <i class="fas fa-inbox text-2xl mb-2 text-gray-300"></i>
-                                                <p>No assignments from your classes</p>
+                                                <p>Tidak ada tugas</p>
                                             </div>
                                         @endforelse
                                     </div>
@@ -183,13 +194,16 @@
                                 <div>
                                     <h4 class="font-medium text-gray-700 mb-4 flex items-center border-b pb-2">
                                         <i class="fas fa-chalkboard-teacher text-purple-500 mr-2"></i>
-                                        Assignments You're Teaching
+                                        Tugas yang Anda Bimbing
                                     </h4>
                                     <div class="space-y-4">
                                         @forelse($tugasTentor as $assignment)
-                                            <div class="border-l-4 border-purple-400 pl-4 py-2 hover:bg-purple-50 rounded-r-lg transition-colors duration-200">
+                                            <a href="{{ route('tugas.show', [$assignment->lecture->id, $assignment->id]) }}"
+                                                class="block border-l-4 border-purple-400 pl-4 py-2 hover:bg-purple-50 rounded-r-lg transition-colors duration-200 text-inherit no-underline">
                                                 <div class="flex justify-between items-start">
-                                                    <h5 class="font-medium text-gray-900">{{ $assignment->title }}</h5>
+                                                    <h5 class="font-medium text-purple-700">
+                                                        {{ $assignment->title }}
+                                                    </h5>
                                                     <span class="text-xs px-2 py-1 bg-purple-100 text-purple-800 rounded-full">
                                                         Due: {{ $assignment->deadline->format('d M Y H:i') }}
                                                     </span>
@@ -198,11 +212,12 @@
                                                     <i class="fas fa-chalkboard text-gray-400 mr-1"></i>
                                                     {{ $assignment->lecture->name ?? 'N/A' }}
                                                 </p>
-                                            </div>
+                                            </a>
+
                                         @empty
                                             <div class="text-center py-4 text-gray-500">
                                                 <i class="fas fa-inbox text-2xl mb-2 text-gray-300"></i>
-                                                <p>No teaching assignments</p>
+                                                <p>Tidak ada tugas</p>
                                             </div>
                                         @endforelse
                                     </div>
@@ -221,18 +236,51 @@
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-xl font-bold text-gray-900 flex items-center">
                             <i class="fas fa-user-edit text-indigo-500 mr-2"></i>
-                            Edit Profile
+                            Edit Profil
                         </h3>
                         <button id="closeModal" class="text-gray-400 hover:text-gray-500 transition-colors">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
 
-                    <form id="profileForm" action="{{ route('profile.update') }}" method="POST">
+                    <form id="profileForm" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="space-y-4">
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <label for="avatar" class="block text-sm font-medium text-gray-700 mb-1">Foto Profil</label>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-100 border">
+                                        @if ($user->avatar)
+                                            <img id="avatarPreview" src="{{ asset($user->avatar)}}" alt="Avatar Preview" class="w-full h-full object-cover">
+                                        @else
+                                            <svg id="avatarPreview" class="w-full h-full object-cover" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <defs>
+                                                    <linearGradient id="circleGradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                                                        <stop offset="0%" stop-color="#f97316" />
+                                                        <stop offset="100%" stop-color="#7e22ce" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <circle cx="50" cy="50" r="45" fill="url(#circleGradient)" />
+                                                <circle cx="50" cy="40" r="15" fill="#ffffff" />
+                                                <circle cx="50" cy="85" r="25" fill="#ffffff" />
+                                            </svg>
+                                        @endif
+                                    </div>
+
+                                    <div class="relative">
+                                        <input type="file" name="avatar" id="avatar" accept="image/*"
+                                               class="absolute inset-0 opacity-0 cursor-pointer" />
+                                        <label for="avatar"
+                                               class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-indigo-700 transition">
+                                            Pilih Foto
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-user text-gray-400"></i>
@@ -254,18 +302,18 @@
                             </div>
 
                             <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-lock text-gray-400"></i>
                                     </div>
-                                    <input type="password" id="password" name="password" placeholder="Leave blank to keep current"
+                                    <input type="password" id="password" name="password" placeholder="Masukkan password baru"
                                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
                                 </div>
                             </div>
 
                             <div>
-                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-lock text-gray-400"></i>
@@ -278,10 +326,10 @@
 
                         <div class="mt-6 flex justify-end space-x-3">
                             <button type="button" id="cancelEdit" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                                Cancel
+                                Batal
                             </button>
                             <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
-                                <i class="fas fa-save mr-2"></i> Save Changes
+                                <i class="fas fa-save mr-2"></i>Simpan Perubahan
                             </button>
                         </div>
                     </form>
@@ -289,6 +337,7 @@
             </div>
         </div>
     </div>
+
 
     @push('scripts')
         <script>
@@ -341,6 +390,26 @@
                 modal.addEventListener('click', function(e) {
                     if (e.target === modal) {
                         closeModal();
+                    }
+                });
+
+                document.getElementById('avatar').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    const preview = document.getElementById('avatarPreview');
+
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            if (preview.tagName === 'IMG') {
+                                preview.src = e.target.result;
+                            } else {
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                img.className = 'w-full h-full object-cover';
+                                preview.replaceWith(img);
+                            }
+                        };
+                        reader.readAsDataURL(file);
                     }
                 });
 

@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Lecture;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class profileController extends Controller
 {
@@ -61,6 +62,7 @@ public function update(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
         'password' => 'nullable|string|min:8|confirmed',
+        'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
     if ($validator->fails()) {
@@ -75,6 +77,17 @@ public function update(Request $request)
         'email' => $request->email,
     ];
 
+    if ($request->hasFile('avatar')) {
+        // Hapus avatar lama jika ada
+        if ($user->avatar) {
+            $oldAvatarPath = str_replace('/storage', 'public', $user->avatar);
+            Storage::delete($oldAvatarPath);
+        }
+
+        $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        $data['avatar'] = Storage::url($avatarPath);
+    }
+
     if ($request->filled('password')) {
         $data['password'] = Hash::make($request->password);
     }
@@ -84,6 +97,8 @@ public function update(Request $request)
     return response()->json([
         'success' => true,
         'message' => 'Profile updated successfully!'
+
+
     ]);
 }
 }
