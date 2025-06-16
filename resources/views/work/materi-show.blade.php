@@ -5,7 +5,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-4xl font-bold text-gray-800">Detail Materi</h1>
-            <a href="{{ route('lecture.show', ['id' => $lecture->id]) }}"
+            <a href="{{ route('lecture.show', ['lecture' => $lecture]) }}"
                 class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
