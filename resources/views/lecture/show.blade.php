@@ -9,5 +9,9 @@
         'materi' => $materi,
         'pengumuman' => $pengumuman,
         'isTentorInThisClass' => $isTentorInThisClass,
-        'userCount' => $lecture->user_count])
+        'userCount' => $lecture->user_count,
+    ])
+    @push('scripts')
+        @vite('resources/js/confirmLectureExit.js')
+    @endpush
 @endsection

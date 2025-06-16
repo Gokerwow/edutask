@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notice extends Model
+class NoticeComment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'comment',
         'user_id',
-        'lecture_id',
-        'description',
+        'notice_id',
     ];
 
     public function user()
@@ -20,14 +20,8 @@ class Notice extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function lecture()
+    public function notice()
     {
-        return $this->belongsTo(Lecture::class);
-    }
-
-    // Tambahkan relasi ini
-    public function comments()
-    {
-        return $this->hasMany(NoticeComment::class)->latest();
+        return $this->belongsTo(Notice::class);
     }
 }

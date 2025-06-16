@@ -43,43 +43,47 @@
                 </div>
 
                 <!-- Lampiran -->
-                <div>
-                    <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Lampiran
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- File PDF -->
-                        <div class="border border-gray-200 rounded-md p-4 hover:bg-gray-50 transition flex items-center">
-                            <div class="mr-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 384 512"
-                                    fill="currentColor">
-                                    <path
-                                        d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.3 10.7 24 24 24z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-800">{{ $materi->original_fileName }}</h4>
-                                <p class="text-sm text-gray-500">{{ $materi->formattedFileSize }}</p>
-                                <a href="{{ route('materi.download', ['lecture' => $lecture, 'materi' => $materi]) }}"
-                                    class="mt-2 text-sm text-indigo-600 hover:text-indigo-800 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
+                @if ($materi->file_path && $materi->original_fileName)
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Lampiran
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- File PDF -->
+                            <div
+                                class="border border-gray-200 rounded-md p-4 hover:bg-gray-50 transition flex items-center">
+                                <div class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500"
+                                        viewBox="0 0 384 512" fill="currentColor">
+                                        <path
+                                            d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.3 10.7 24 24 24z" />
                                     </svg>
-                                    Unduh
-                                </a>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">{{ $materi->original_fileName }}</h4>
+                                    <p class="text-sm text-gray-500">{{ $materi->formattedFileSize }}</p>
+                                    <a href="{{ route('materi.download', ['lecture' => $lecture, 'materi' => $materi]) }}"
+                                        class="mt-2 text-sm text-indigo-600 hover:text-indigo-800 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Unduh
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
             </div>
 
             @if ($isTentor)
@@ -110,33 +114,6 @@
         </div>
     </div>
     @push('scripts')
-        <script>
-            // Tangkap semua form dengan class 'delete-form'
-            const deleteForms = document.querySelectorAll('.delete-form');
-
-            deleteForms.forEach(form => {
-                form.addEventListener('submit', function(event) {
-                    // Hentikan pengiriman form default
-                    event.preventDefault();
-
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Materi yang dihapus tidak dapat dikembalikan!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya, hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        // Jika pengguna menekan tombol "Ya, hapus!"
-                        if (result.isConfirmed) {
-                            // Lanjutkan pengiriman form
-                            form.submit();
-                        }
-                    });
-                });
-            });
-        </script>
+        @vite('resources/js/confirmMateriDelete.js')
     @endpush
 @endsection

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Assignment;
+use App\Models\NoticeComment;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             AssignmentSeeder::class,
             KelasUserRolesSeeder::class,
             NoticeSeeder::class,
+            NoticeCommentSeeder::class,
             MateriSeeder::class,
             SubmissionSeeder::class,
             FeedbacksSeeder::class,
