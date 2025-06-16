@@ -7,6 +7,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\TugasKuisController;
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -22,6 +23,12 @@ Route::middleware('auth')->group(function() {
     name('profile');
     Route::post('profile/update', [profileController::class, 'update'])
     ->name('profile.update');
+
+    Route::prefix('feedback')->group(function() {
+        Route::get('/', [FeedbackController::class, 'index'])->name('feedback.index');
+        Route::get('/create', [FeedbackController::class, 'showForm'])->name('feedback.form');
+        Route::post('/create', [FeedbackController::class, 'store'])->name('feedback.store');
+    });
 
     Route::prefix('lecture')->group(function() {
         Route::get('/', [LectureController::class, 'indexLecture'])
