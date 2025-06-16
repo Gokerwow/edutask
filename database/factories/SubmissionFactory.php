@@ -44,7 +44,6 @@ class SubmissionFactory extends Factory
                         $status = fake()->randomElement(['submitted', 'graded', 'cancelled']);
 
                         // 2. Siapkan variabel grade dan data terkait dengan nilai default null.
-                        $grade = null;
                         $comment = null;
                         $graded_at = null;
 
@@ -69,7 +68,7 @@ class SubmissionFactory extends Factory
                             'status' => $status, // Gunakan status yang sudah kita buat
                             'assignment_id' => $assignment->id,
                             'user_id' => $siswaRole->user_id,
-                            'grade' => $grade, // Gunakan grade yang sudah kita tentukan
+                            'grade' => 0, // Gunakan grade yang sudah kita tentukan
                             'comment' => $comment, // Gunakan comment yang sudah kita tentukan
                             'graded_at' => $graded_at, // Gunakan tanggal yang sudah kita tentukan
                         ];

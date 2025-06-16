@@ -105,7 +105,7 @@ class TugasController extends Controller
             'tugas' => $tugas,
             'isTentorInThisClass' => $isTentorInThisClass,
             'submissionExists' => $submissionExists,
-            'submissions' => $submissions
+            'submissions' => $submissions,
         ]);
     }
 
@@ -202,41 +202,15 @@ class TugasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyTugas(Lecture $lecture, Assignment $tugas)
     {
-        //
+        $tugas->delete();
+
+        Alert::success('Berhasil Dihapus', 'Tugas Berhasil Dihapus!');
+
+        return redirect()->route('lecture.show', [
+            'lecture' => $lecture,
+        ]);
     }
 
-
-    public function beriNilai(Request $request, Lecture $lecture, Assignment $tugas, Submission $submission)
-    {
-        $validator = Validator::make($request->all(), [
-            'submission-grade' => 'required|string|max:100',
-            'submission-comment' => 'nullable|string|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            $errorList = '<ul>';
-            foreach ($validator->errors()->all() as $error) {
-                $errorList .= '<li>' . e($error) . '</li>';
-            }
-            $errorList .= '</ul>';
-
-            Alert::error('Oops! Terjadi Kesalahan', $errorList)->toHtml();
-            return redirect()->back()->withInput();
-        };
-
-        $validated_data = $validator->validated();
-
-        $submission->update([
-        'grade' => $validated_data['submission-grade'],
-        'lecturer_comment' => $validated_data['submission-comment'],
-        'graded_at' => now(),
-        ]);
-
-        Alert::success('Berhasil', 'Nilai telah berhasil disimpan.');
-
-        return redirect()->back();
-
-    }
 }

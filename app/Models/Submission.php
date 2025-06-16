@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
 class Submission extends Model
 {
     /** @use HasFactory<\Database\Factories\SubmissionFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'description',
@@ -22,6 +23,7 @@ class Submission extends Model
         'grade', // Optional field for grade
         'comment', // Optional field for comments
         'graded_at', // Optional field for when the submission was graded
+        'deleted_at',
     ];
 
     public function assignment()
