@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lecture;
 use App\Models\Notice;
+use App\Models\NoticeComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -71,4 +72,20 @@ class NoticeController extends Controller
         Alert::success('Berhasil', 'Komentar Anda telah ditambahkan.');
         return redirect()->route('notice.show', [$lecture, $notice]);
     }
+
+    public function destroyComment(Lecture $lecture, Notice $notice, NoticeComment $comment)
+    {
+        // Check if the authenticated user is the owner of the comment or the notice
+        if ($comment->user_id !== Auth::id() && $notice->lecture->user->first()->id !== Auth::id()) {
+            abort(403, 'Anda tidak diizinkan untuk menghapus komentar ini.');
+        }
+
+        // Delete the comment
+        $comment->delete();
+
+        Alert::success('Berhasil', 'Komentar berhasil dihapus!');
+        return redirect()->route('notice.show', [$lecture, $notice]);
+    }
+
+
 }
