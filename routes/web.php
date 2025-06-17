@@ -40,6 +40,10 @@ Route::middleware('auth')->group(function () {
             ->name('lecture.store');
         Route::get('/{lecture}', [LectureController::class, 'showLecture'])
             ->name('lecture.show');
+        Route::get('/{lecture}/edit', [LectureController::class, 'editLecture'])
+            ->name('lecture.edit');
+        Route::put('/{lecture}/edit', [LectureController::class, 'updateLecture'])
+            ->name('lecture.update');
         Route::delete('/{lecture}', [LectureController::class, 'exitLecture'])
             ->name('lecture.out');
         Route::post('/join', [LectureController::class, 'joinLecture'])

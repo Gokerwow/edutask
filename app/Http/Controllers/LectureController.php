@@ -187,17 +187,63 @@ class LectureController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function editLecture(ModelsLecture $lecture)
     {
-        //
+        return view('lecture.edit', [
+            'lecture' => $lecture
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateLecture(Request $request, ModelsLecture $lecture)
     {
-        //
+        // Pastikan hanya tentor dari kelas ini yang bisa mengupdate
+        if (Auth::id() !== $lecture->user_id) {
+            abort(403, 'Anda tidak memiliki akses untuk mengupdate kelas ini.');
+        }
+
+        $validate = Validator::make($request->all(), [
+            'class-name' => 'required|string|max:255',
+            'class-topic' => 'required|string|max:10',
+            'class-description' => 'required|string|max:255',
+            'class-banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validate->fails()) {
+            $errorList = '<ul>';
+            foreach ($validate->errors()->all() as $error) {
+                $errorList .= '<li>' . e($error) . '</li>';
+            }
+            $errorList .= '</ul>';
+
+            Alert::error('Oops! Terjadi Kesalahan', $errorList)->toHtml();
+            return redirect()->back()->withInput();
+        };
+
+        $validatedData = $validate->validated();
+
+        $lecture->name = $validatedData['class-name'];
+        $lecture->topic = $validatedData['class-topic'];
+        $lecture->description = $validatedData['class-description'];
+
+        if ($request->hasFile('class-banner')) {
+            // Hapus banner lama jika ada
+            if ($lecture->banner) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $lecture->banner));
+            }
+
+            $file = $request->file('class-banner');
+            $path = $file->store('banners', 'public');
+            $lecture->banner = Storage::url($path);
+        }
+
+        $lecture->save();
+
+        Alert::success('Success', 'Detail Kelas Berhasil Diperbarui.');
+
+        return redirect()->route('lecture.show', [$lecture]);
     }
 
     /**
