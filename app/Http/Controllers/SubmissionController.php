@@ -172,7 +172,7 @@ class SubmissionController extends Controller
         // Skenario 2: Pengguna adalah Mahasiswa pemilik submission
         if ($user->id === $submission->user_id) {
             // Mahasiswa hanya bisa hapus jika belum dinilai DAN belum deadline
-            if (is_null($submission->grade) && now()->lessThan($tugas->deadline)) {
+            if ($submission->grade === 0 && now()->lessThan($tugas->deadline)) {
                 $canDelete = true;
             }
         }
