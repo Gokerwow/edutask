@@ -187,7 +187,7 @@
                                         Baru
                                     </span>
                                 </div>
-                                <p class="mt-1 text-sm text-gray-500"> {{ $task->description }} </p>
+                                <p class="mt-1 text-sm text-gray-500">{{ $task->description }}</p>
                                 <div class="mt-2 flex items-center text-sm text-gray-500">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none"
@@ -221,27 +221,24 @@
             </div>
         @elseif($activeTab === 'forumTab')
             <div class="divide-y divide-gray-200">
-                @if ($isTentorInThisClass)
-                <div class="flex-1 p-6">
+                <div class="bg-white rounded-xl shadow-sm p-6">
                     <form wire:submit="storeNotice">
-                        {{-- HANYA ADA TEXTAREA, INPUT JUDUL DIHAPUS --}}
-                        <textarea wire:model="newNoticeDescription" placeholder="Mulai forum baru..."
-                            class="w-full px-3 py-2 border rounded-md focus:outline-indigo-500 @error('newNoticeDescription') border-red-500 @enderror"
-                            rows="3"></textarea>
-                        @error('newNoticeDescription')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-
-                        {{-- Tombol Submit --}}
-                        <div class="text-right mt-3">
+                        <div class="flex items-end gap-3">
+                            <div class="flex-grow">
+                                <textarea wire:model="newNoticeDescription" placeholder="Bagikan pemikiran Anda..."
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none transition-all"
+                                    rows="2"></textarea>
+                                @error('newNoticeDescription')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <button type="submit"
-                                class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                Publikasikan
+                                class="mb-1 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                                Posting
                             </button>
                         </div>
                     </form>
                 </div>
-                @endif
                 {{-- Asumsi variabel $pengumuman berisi collection/array pengumuman --}}
                 @forelse ($pengumuman as $item)
                     <div class="p-6 hover:bg-gray-50 transition">

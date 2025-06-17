@@ -132,16 +132,13 @@
                     <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
                         <div class="relative h-40 overflow-hidden">
                             <div
-                                class="w-full h-full object-cover course-image bg-[linear-gradient(135deg,#f97316_0%,#7e22ce_100%)] ">
+                                class="w-full h-full bg-[linear-gradient(135deg,#f97316_0%,#7e22ce_100%)] flex justify-center items-center ">
                                 @if ($joinedLecture->lecture->banner)
-                                    <img class="hover:scale-110 transition duration-500"
+                                    <img class="hover:scale-110 transition duration-500 w-full object-center"
                                         src="{{ $joinedLecture->lecture->banner }}" alt="">
                                 @endif
 
                             </div>
-                            {{-- <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                            alt="Mathematics"
-                            class="w-full h-full object-cover course-image transition duration-500"> --}}
                         </div>
                         <div class="p-5">
                             <div class="flex justify-between items-start mb-2">
@@ -149,7 +146,7 @@
                                 <span
                                     class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{{ $joinedLecture->lecture->code }}</span>
                             </div>
-                            <p class="text-gray-600 text-sm mb-4"> {{ $joinedLecture->lecture->description }} </p>
+                            <p class="text-gray-600 text-sm mb-4">{{ $joinedLecture->lecture->description }}</p>
 
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
