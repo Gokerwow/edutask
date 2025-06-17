@@ -149,8 +149,7 @@
                                 <span
                                     class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{{ $joinedLecture->lecture->code }}</span>
                             </div>
-                            <p class="text-gray-600 text-sm mb-4">Master advanced calculus concepts and applications in
-                                real-world scenarios.</p>
+                            <p class="text-gray-600 text-sm mb-4"> {{ $joinedLecture->lecture->description }} </p>
 
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
