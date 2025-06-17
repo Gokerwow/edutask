@@ -159,7 +159,7 @@
                                 d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                         </svg>
                         <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak Ada Materi</h3>
-                        <p class="mt-1 text-sm text-gray-500">Saat ini belum ada MMateri dari tentor.</p>
+                        <p class="mt-1 text-sm text-gray-500">Saat ini belum ada Materi dari tentor.</p>
                     </div>
                 @endforelse
             </div>
@@ -239,6 +239,7 @@
                         </div>
                     </form>
                 </div>
+                @endif
                 {{-- Asumsi variabel $pengumuman berisi collection/array pengumuman --}}
                 @forelse ($pengumuman as $item)
                     <div class="p-6 hover:bg-gray-50 transition">
@@ -330,13 +331,10 @@
                     <div class="ml-4 flex-1">
                         <h3 class="text-lg font-medium text-gray-900">Deskripsi Kelas</h3>
                         <p class="mt-1 text-sm text-gray-600">
-                            Kelas ini membahas fundamental algoritma dan struktur data dengan implementasi praktis
-                            menggunakan Python.
-                            Materi mencakup sorting algorithms, linked lists, trees, dan graph traversal.
-                        </p>
+                            {{ $lecture->description }}
                         <div class="mt-4 grid grid-cols-2 gap-4">
                             <div>
-                                <p class="text-xs font-medium text-gray-500">Dosen Pengampu</p>
+                                <p class="text-xs font-medium text-gray-500">Tentor</p>
                                 <p class="text-sm">{{ $lecture->tentor->name }}</p>
                             </div>
                             <div>
@@ -352,26 +350,7 @@
             <div class="p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Materi Pembelajaran</h3>
                 <div class="space-y-3">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-5 w-5 text-green-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="ml-2 text-sm text-gray-600">Pengenalan Algoritma dan Kompleksitas Waktu</p>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-5 w-5 text-green-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="ml-2 text-sm text-gray-600">Sorting Algorithms (Bubble, Selection, Insertion)</p>
-                    </div>
+                    @forelse ($materi as $materi)
                     <div class="flex items-center">
                         <div class="flex-shrink-0 h-5 w-5 text-blue-500">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -380,18 +359,19 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <p class="ml-2 text-sm text-gray-600">Linked Lists dan Implementasinya (Sedang Berjalan)</p>
+                        <p class="ml-2 text-sm text-gray-600">{{ $materi->title }}</p>
                     </div>
+                    @empty
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 h-5 w-5 text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
-                                    clip-rule="evenodd" />
+                        <div class="h-5 w-5 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 512 512">
+                                <circle cx="256" cy="256" r="256" fill="#EF4444" />
+                                <path fill="#FFFFFF" d="M342.6 169.4c-9.4-9.4-24.6-9.4-33.9 0L256 222.1l-52.7-52.7c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L222.1 256l-52.7 52.7c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L256 289.9l52.7 52.7c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L289.9 256l52.7-52.7c9.5-9.4 9.5-24.6 0-33.9z"/>
                             </svg>
                         </div>
-                        <p class="ml-2 text-sm text-gray-600">Tree dan Graph Traversal</p>
+                        <p class="ml-2 text-sm text-gray-600">Belum ada materi yang diupload nih.</p>
                     </div>
+                    @endforelse
                 </div>
             </div>
         </div>
