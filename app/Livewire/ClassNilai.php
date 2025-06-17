@@ -13,28 +13,29 @@ class ClassNilai extends Component
 {
     public $lecture;
     public $tugas;
+    public $queries;
 
     public function render()
     {
         // Untuk highest dan lowest grade, tetap menggunakan grade yang ada saja (bukan null)
-        $highestGrade = Submission::whereHas('assignment', function($query) {
-                $query->where('lecture_id', $this->lecture->id);
-            })
+        $highestGrade = Submission::whereHas('assignment', function ($query) {
+            $query->where('lecture_id', $this->lecture->id);
+        })
             ->whereNotNull('grade') // Tambahkan ini untuk mengecualikan grade null
             ->orderBy('grade', 'desc')
             ->first();
 
-        $lowestGrade = Submission::whereHas('assignment', function($query) {
-                $query->where('lecture_id', $this->lecture->id);
-            })
+        $lowestGrade = Submission::whereHas('assignment', function ($query) {
+            $query->where('lecture_id', $this->lecture->id);
+        })
             ->whereNotNull('grade') // Tambahkan ini untuk mengecualikan grade null
             ->orderBy('grade', 'asc')
             ->first();
 
         // Untuk rata-rata keseluruhan, gunakan COALESCE untuk mengganti null dengan 0
-        $average = Submission::whereHas('assignment', function($query) {
-                $query->where('lecture_id', $this->lecture->id);
-            })
+        $average = Submission::whereHas('assignment', function ($query) {
+            $query->where('lecture_id', $this->lecture->id);
+        })
             ->selectRaw('AVG(COALESCE(grade, 0)) as avg_grade')
             ->value('avg_grade');
 
@@ -71,15 +72,29 @@ class ClassNilai extends Component
             ];
         });
 
+        // Salin semua data ke variabel baru.
+        $finalGrades = $gradesPerUser;
+
+        // Jika ada input pencarian, filter collection '$finalGrades'.
+        if (!empty($this->queries)) {
+            $finalGrades = $finalGrades->filter(function ($item) {
+                // 'stripos' digunakan untuk pencarian case-insensitive (seperti LIKE)
+                return stripos($item->user_name, $this->queries) !== false ||
+                    stripos($item->user_email, $this->queries) !== false;
+            });
+        }
+
         return view('livewire.class-nilai', [
             'gradesPerUser' => $gradesPerUser,
             'highestGrade' => $highestGrade,
             'lowestGrade' => $lowestGrade,
             'avg_grade' => $avg_grade_formatted,
+            'finalGrades' => $finalGrades
         ]);
     }
 
-    public function letterGrade($grade) {
+    public function letterGrade($grade)
+    {
         if ($grade >= 85) {
             return 'A';
         } elseif ($grade >= 75 && $grade <= 84) {

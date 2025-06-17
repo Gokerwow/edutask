@@ -18,7 +18,7 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-                <input type="text"
+                <input type="text" wire:model.live.debounce.300ms='queries'
                     class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Cari siswa...">
             </div>
@@ -36,14 +36,10 @@
     </div>
 
     <!-- Daftar Nilai (Card-based) -->
-    {{-- Pastikan Alpine.js sudah di-load di layout utama Anda --}}
-
     @if ($gradesPerUser && $gradesPerUser->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            @foreach ($gradesPerUser as $gradesInfo)
-                {{-- ====================================================== --}}
-                {{-- 1. KARTU INFORMASI SISWA (TETAP SAMA) --}}
-                {{-- ====================================================== --}}
+            @foreach ($finalGrades as $gradesInfo)
+                {{-- KARTU INFORMASI SISWA (TETAP SAMA) --}}
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 flex flex-col">
                     <div class="p-5 flex-grow">
                         <div class="flex items-center mb-4">
@@ -84,9 +80,7 @@
                         </div>
                     </div>
                     <div class="border-t border-gray-100 px-5 py-3 bg-gray-50 flex justify-end">
-                        {{-- ====================================================== --}}
-                        {{-- 2. TOMBOL UNTUK MEMICU MODAL YANG SPESIFIK --}}
-                        {{-- ====================================================== --}}
+                        {{-- TOMBOL UNTUK MEMICU MODAL YANG SPESIFIK --}}
                         <button x-data @click="$dispatch('open-modal', 'detail-modal-{{ $gradesInfo->user_id }}')"
                             class="text-sm text-blue-600 hover:text-blue-800 font-medium">
                             Lihat Detail
@@ -94,9 +88,7 @@
                     </div>
                 </div>
 
-                {{-- ====================================================== --}}
-                {{-- 3. MODAL SPESIFIK UNTUK SETIAP SISWA DALAM LOOP --}}
-                {{-- ====================================================== --}}
+                {{-- MODAL SPESIFIK UNTUK SETIAP SISWA DALAM LOOP --}}
                 <x-modal name="detail-modal-{{ $gradesInfo->user_id }}" maxWidth="4xl">
                     <div class="p-6 bg-white">
                         <div class="flex justify-between items-center mb-6">
