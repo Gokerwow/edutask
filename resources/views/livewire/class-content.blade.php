@@ -239,7 +239,6 @@
                         </div>
                     </form>
                 </div>
-                @endif
                 {{-- Asumsi variabel $pengumuman berisi collection/array pengumuman --}}
                 @forelse ($pengumuman as $item)
                     <div class="p-6 hover:bg-gray-50 transition">
