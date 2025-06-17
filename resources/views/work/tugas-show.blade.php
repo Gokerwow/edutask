@@ -341,9 +341,9 @@
 
                                     {{-- Tombol 1: Batalkan Pengumpulan (Form) --}}
                                     <form
+                                        class="delete-form"
                                         action="{{ route('submission.destroy', ['lecture' => $lecture, 'tugas' => $tugas, 'submission' => $submissionExists]) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pengumpulan tugas ini?');">
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -401,5 +401,6 @@
     </div>
     @push('scripts')
         @vite('resources/js/confirmTugasDelete.js')
+        @vite('resources/js/confirmBatalTugas.js')
     @endpush
 @endsection

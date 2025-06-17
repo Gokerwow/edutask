@@ -90,23 +90,10 @@
                     @endif
                     <div>
                         <label for="sort" class="sr-only">Urutkan</label>
-                        <select id="sort" name="sort"
+                        <select id="sort" name="sort"  wire:model.live="sortBy"
                             class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                            <option>Terbaru</option>
-                            <option>Terlama</option>
-                            <option>A-Z</option>
-                            <option>Z-A</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="filter" class="sr-only">Filter</label>
-                        <select id="filter" name="filter"
-                            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                            <option>Semua Materi</option>
-                            <option>Video</option>
-                            <option>Dokumen</option>
-                            <option>Slide</option>
-                            <option>Link Eksternal</option>
+                            <option value="desc">Terbaru</option>
+                            <option value="asc">Terlama</option>
                         </select>
                     </div>
                 </div>

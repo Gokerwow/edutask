@@ -91,12 +91,13 @@
                             <div class="flex items-center gap-3 text-xs">
                                 {{-- Tampilkan tombol hanya jika user adalah pemilik komentar --}}
                                 @if (Auth::id() == $comment->user_id)
-                                    <form action="{{ route('comment.destroy', [$lecture, $notice, $comment]) }}" method="POST"
-                                        onsubmit="return confirm('Anda yakin ingin menghapus komentar ini?');">
+                                    <form class="delete-form"
+                                        action="{{ route('comment.destroy', [$lecture, $notice, $comment]) }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="font-medium text-red-600 hover:text-red-800">
-                                            Hapus 
+                                            Hapus
                                         </button>
                                     </form>
                                 @endif
@@ -111,4 +112,7 @@
             @endforelse
         </div>
     </div>
+    @push('scripts')
+        @vite('resources/js/confirmHapusKomen.js')
+    @endpush
 @endsection
