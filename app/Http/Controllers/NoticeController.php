@@ -13,13 +13,15 @@ class NoticeController extends Controller
 {
     public function show(Lecture $lecture, Notice $notice)
     {
-        $notice->load('user', 'comments.user');
+        // $notice->load('user', 'comments.user');
+        $notice->load('lecture.tentor', 'comments.user');
         return view('notice.show', compact('lecture', 'notice'));
     }
 
     public function edit(Lecture $lecture, Notice $notice)
     {
-        if ($notice->lecture->user->first()->id !== Auth::id()) {
+        // if ($notice->lecture->user->first()->id !== Auth::id()) {
+        if ($notice->lecture->tentor->id !== Auth::id()) {
             abort(403, 'Anda tidak diizinkan untuk mengedit pengumuman ini.');
         }
         return view('notice.form-notice', compact('lecture', 'notice'));
@@ -27,7 +29,8 @@ class NoticeController extends Controller
 
     public function update(Request $request, Lecture $lecture, Notice $notice)
     {
-        if ($notice->lecture->user->first()->id !== Auth::id()) {
+        // if ($notice->lecture->user->first()->id !== Auth::id()) {
+        if ($notice->lecture->tentor->id !== Auth::id()) {
             abort(403, 'Anda tidak diizinkan untuk mengedit pengumuman ini.');
         }
 

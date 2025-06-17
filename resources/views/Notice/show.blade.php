@@ -23,8 +23,8 @@
                     @endif
                 </div>
                 <div class="flex items-center text-sm text-gray-500 mb-4">
-                    @if ($notice->user && $notice->user->avatar)
-                        <img class="h-8 w-8 rounded-full object-cover mr-3" src="{{ $notice->user->avatar }}"
+                    @if ($notice->lecture && $notice->lecture->tentor && $notice->lecture->tentor->avatar)
+                        <img class="h-8 w-8 rounded-full object-cover mr-3" src="{{ $notice->lecture->tentor->avatar }}"
                             alt="Avatar">
                     @else
                         <svg class="w-8 h-8 rounded-full overflow-hidden mr-3" viewBox="0 0 100 100"
@@ -42,7 +42,7 @@
                         </svg>
                     @endif
 
-                    <span>Dibuat oleh <span class="font-medium">{{ $notice->lecture->user->first()->name }}</span> &bull;
+                    <span>Dibuat oleh <span class="font-medium">{{ $notice->lecture->tentor->name }}</span> &bull;
                         {{ $notice->created_at->format('d M Y, H:i') }}</span>
                 </div>
             </div>
