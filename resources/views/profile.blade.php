@@ -37,7 +37,7 @@
                             <div class="mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left flex-1 relative z-10">
                                 <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $user->name }}</h1>
                                 <p class="text-white text-lg">{{ $user->email }}</p>
-                                <p class="text-sm text-white mt-1">Member sejak {{ date('d M Y', strtotime($user->created_at)) }}</p>
+                                <p class="text-sm text-white mt-1">Bergabung sejak {{ date('d M Y', strtotime($user->created_at)) }}</p>
                             </div>
                             <div class="mt-4 sm:mt-0 flex gap-2">
                                 <button onclick="document.getElementById('editProfileModal').classList.remove('hidden')"
@@ -83,7 +83,7 @@
                                         <i class="fas fa-calendar-day text-indigo-600 w-5"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm text-gray-500">Member Sejak</p>
+                                        <p class="text-sm text-gray-500">Bergabung Sejak</p>
                                         <p class="text-gray-700 font-medium">{{ date('d M Y', strtotime($user->created_at)) }}</p>
                                     </div>
                                 </div>

@@ -87,17 +87,6 @@ class LectureController extends Controller
 
     public function codeCheck()
     {
-        $validator = Validator::make(request()->all(), [
-            'class-code' => 'required|string|max:10|unique:lectures,code',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()->first('class-code'),
-            ]);
-        }
-
         $codeToCheck = request()->input('class-code');
 
         $exist = ModelsLecture::where('code', $codeToCheck)->exists();
